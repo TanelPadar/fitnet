@@ -1,0 +1,15 @@
+.sidebar {
+    background-color: #005073;
+}
+
+.sidebar nav a {
+    text-decoration: none;
+    color: #C6F1FF;
+    font-size: 2rem;
+}
+
+.sidebar nav a:focus {
+    color:white;
+    background:#0078AB ;
+}
+
