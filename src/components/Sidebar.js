@@ -3,6 +3,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/main.css';
+import Profile from "./Profile";
 
 
 
@@ -20,7 +21,7 @@ const Sidebar = () => {
                </nav>
            </div>
            <div className="col-10">
-
+            <Profile/>
            </div>
            </div>
        </div>

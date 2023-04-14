@@ -13,3 +13,19 @@
     background:#0078AB ;
 }
 
+.profile-info {
+
+    border-bottom: solid 1px black
+}
+
+.profile-info p {
+    margin: 0;
+}
+
+.profile-btn {
+    background-color: #005073;
+    color: white;
+    padding: 0.2rem 0.2rem 0.2rem 0.2rem;
+    border-radius: 0.5rem;
+}
+
