@@ -11,6 +11,19 @@ import Clients from "./Clients";
 const Sidebar = () => {
     const [activeItem, setActiveItem] = useState('profile');
 
+    function generateNavItem(itemName, activeItem, handleItemClick) {
+        const isActive = itemName === activeItem;
+        return (
+            <a
+                className={`profile-item ${isActive ? 'active' : ''}`}
+                href="#"
+                onClick={() => handleItemClick(itemName)}
+            >
+                {itemName.charAt(0).toUpperCase() + itemName.slice(1)}
+            </a>
+        );
+    }
+
     const handleItemClick = (item) => {
         setActiveItem(item);
     };
@@ -19,34 +32,10 @@ const Sidebar = () => {
            <div className="row">
            <div className="col-2 vh-100 sidebar">
                <nav className="d-flex flex-column mt-2">
-                   <a
-                       className={activeItem === 'profile' ? 'profile-item active' : 'profile-item'}
-                       href="#"
-                       onClick={() => handleItemClick('profile')}
-                   >
-                       Tanel Padar
-                   </a>
-                   <a
-                       className={activeItem === 'clients' ? 'active' : ''}
-                       href="#"
-                       onClick={() => handleItemClick('clients')}
-                   >
-                       Clients
-                   </a>
-                   <a
-                       className={activeItem === 'schedule' ? 'active' : ''}
-                       href="#"
-                       onClick={() => handleItemClick('schedule')}
-                   >
-                       Schedule
-                   </a>
-                   <a
-                       className={activeItem === 'settings' ? 'active' : ''}
-                       href="#"
-                       onClick={() => handleItemClick('settings')}
-                   >
-                       Settings
-                   </a>
+                   {generateNavItem('profile', activeItem, handleItemClick)}
+                   {generateNavItem('clients', activeItem, handleItemClick)}
+                   {generateNavItem('schedule', activeItem, handleItemClick)}
+                   {generateNavItem('settings', activeItem, handleItemClick)}
                </nav>
 
            </div>
