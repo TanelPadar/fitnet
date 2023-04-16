@@ -5,7 +5,7 @@ import '../css/main.css';
 
 
 
-function Profile () {
+function Profile ({ activeItem}) {
 
 
 
@@ -64,10 +64,7 @@ function Profile () {
                         <button type="button" className="profile-btn ">Add new</button>
                     </div>
                 </div>
-
             </div>
-
-
         </div>
 
 
