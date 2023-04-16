@@ -8,11 +8,8 @@
     font-size: 2rem;
 }
 
-.sidebar nav a:focus {
-    color:white;
-    background:#0078AB ;
-}
-.sidebar nav a:active {
+
+.sidebar nav .active {
     color:white;
     background:#0078AB ;
 }
