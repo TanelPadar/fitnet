@@ -34,8 +34,8 @@ function Clients () {
                             <p className="m-0 w-25">Arnold Schwarzenegger</p>
                             <p className="m-0 w-25">+372 942 293</p>
                     </div>
-                    <div className="d-flex justify-content-end w-50 gap-3">
-                        <div><button type="button" className="clients-info-btn">Info</button></div>
+                    <div className="d-flex justify-content-center w-50 gap-5">
+                        <button type="button" className="clients-info-btn">Info</button>
                         <button type="button" className="clients-edit-btn">Edit</button>
                         <img src={Deletebtn} alt="delete_button" />
                     </div>
@@ -45,9 +45,9 @@ function Clients () {
                         <p className="m-0 w-25">Arnold Schwarzenegger</p>
                         <p className="m-0 w-25">+372 942 293</p>
                     </div>
-                    <div className="d-flex justify-content-end w-50 gap-3">
-                        <div className="d-flex"><button type="button" className="clients-info-btn">Info</button></div>
-                        <div className="d-flex"><button type="button" className="clients-edit-btn">Edit</button></div>
+                    <div className="d-flex justify-content-center w-50 gap-5">
+                        <button type="button" className="clients-info-btn">Info</button>
+                        <button type="button" className="clients-edit-btn">Edit</button>
                         <img src={Deletebtn} alt="delete_button" />
                     </div>
                 </div>
