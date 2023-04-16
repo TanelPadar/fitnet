@@ -30,7 +30,7 @@ const Sidebar = () => {
     return (
        <div className="container-fluid">
            <div className="row">
-           <div className="col-2 vh-100 sidebar">
+           <div className="col-2 vh-100 sidebar min-vw-25">
                <nav className="d-flex flex-column mt-2">
                    {generateNavItem('profile', activeItem, handleItemClick)}
                    {generateNavItem('clients', activeItem, handleItemClick)}

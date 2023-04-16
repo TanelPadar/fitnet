@@ -5,7 +5,7 @@ import '../css/main.css';
 
 
 
-function Profile ({ activeItem}) {
+function Profile () {
 
 
 
@@ -15,6 +15,7 @@ function Profile ({ activeItem}) {
             <div className="col-8 h2 text-white">Your information</div>
             <div className="col-4 h2 text-white">Stats</div>
             </div>
+
             <div className="row mt-5">
                 <div className="col-6 mx-5">
                     <div>
