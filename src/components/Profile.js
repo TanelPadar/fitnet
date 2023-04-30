@@ -7,7 +7,14 @@ import '../css/main.css';
 
 function Profile () {
 
-
+    const parseRow = (name,value) => {
+        return (
+            <div className="profile-info d-flex justify-content-between w-75 py-3">
+                <p>{name}</p>
+                <p className="pe-5">{value}</p>
+            </div>
+        )
+    }
 
     return(
         <div>
@@ -19,34 +26,12 @@ function Profile () {
             <div className="row mt-5">
                 <div className="col-6 mx-5">
                     <div>
-                        <div className="profile-info d-flex justify-content-between w-75 py-3">
-                            <p>Name</p>
-                            <p className="pe-5">Sander Palk</p>
-                        </div>
-                        <div className="profile-info d-flex justify-content-between w-75 py-3">
-                            <p>Birthday</p>
-                            <p className="pe-5">3. November 2002</p>
-                        </div>
-                        <div className="profile-info d-flex justify-content-between w-75 py-3">
-                            <p>Gender</p>
-                            <p className="pe-5">Male</p>
-                        </div>
-                        <div className="profile-info d-flex justify-content-between w-75 py-3">
-                            <p>E-mail</p>
-                            <p className="pe-5">Sander@voco.ee</p>
-                        </div>
-                        <div className="profile-info d-flex justify-content-between w-75 py-3">
-                            <p>Phone</p>
-                            <p className="pe-5">+372 5459 0759</p>
-                        </div>
-                        <div className="profile-info d-flex justify-content-between w-75 py-3">
-                            <p>City</p>
-                            <p className="pe-5">Tartu</p>
-                        </div>
-                        <div className="profile-info d-flex justify-content-between w-75 py-3">
-                            <p>Home city</p>
-                            <p className="pe-5">Tasku Gym!</p>
-                        </div>
+                        {parseRow('Name', 'Sander Palk')}
+                        {parseRow('Birthday', '3. November 2002')}
+                        {parseRow('Gender', 'Male')}
+                        {parseRow('E-mail', 'Sander@voco.ee')}
+                        {parseRow('City', 'Tartu')}
+                        {parseRow('Home city', 'Tasku Gym!')}
                         <div className="d-flex mt-4"><button type="button" className="profile-btn ">Edit information</button></div>
                     </div>
 
