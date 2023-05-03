@@ -4,9 +4,10 @@ import '../css/main.css';
 import axios from "axios";
 
 
-function Profile() {
+function TrainerProfile(props) {
     const [user, setUser] = useState(null)
     const [editInfo, setEditInfo] = useState(true)
+    const [clients, setClients] = useState([])
 
     const [name, setName] = useState('')
     const [birthday, setBirthday] = useState('')
@@ -16,21 +17,32 @@ function Profile() {
     const [city, setCity] = useState('')
     const [homeGym, setHomeGym] = useState('')
 
-    const api = 'http://localhost:4000'
-    const userId = '644faf4484fe1969b0782942'
+    const api = process.env.REACT_APP_API_KEY
+    const userId = localStorage.getItem('userId')
 
     useEffect(() => {
-        const getUserInformation = async (userId) => {
-            try {
-                const response = await axios.get(api + `/trainers/${userId}`);
-                setUser(response.data);
-            } catch (error) {
-                console.log('No user found', error);
-            }
-        };
-
-        getUserInformation(userId);
+        getUserInformation();
+        getTrainerClients()
     }, []);
+
+    const getUserInformation = async () => {
+        try {
+            const response = await axios.get(api + `/trainers/${userId}`);
+            setUser(response.data);
+        } catch (error) {
+            console.log('No user found', error);
+        }
+    };
+
+    const getTrainerClients = async () => {
+        try {
+            const response = await axios.get(api + `/trainer/clients/${userId}`)
+            setClients(response.data)
+            await console.log(clients)
+        } catch (error) {
+            console.log('No clients found', error)
+        }
+    }
 
     const handleEditInfo = () => {
         setEditInfo(!editInfo);
@@ -80,14 +92,19 @@ function Profile() {
                 <p className="pe-5">{value}</p>
             </div>
         )
+    }
 
+    function logOut() {
+        localStorage.removeItem('userId')
+        window.location.reload(false)
     }
 
     return (
         <div>
             <div class="row bg-secondary">
                 <div className="col-8 h2 text-white">Your information</div>
-                <div className="col-4 h2 text-white">Stats</div>
+                <div className="col-2 h2 text-white">Stats</div>
+                <div className="col-2"><button onClick={logOut} className="profile-btn">Log out</button></div>
             </div>
 
             <div className="row mt-5">
@@ -95,9 +112,9 @@ function Profile() {
                     {editInfo ?
                         <div>
                             {user && parseRow('Name', user.name)}
-                            {user && parseRow('Birthday', new Date(user.birthday).toLocaleDateString("en-US", {day: "numeric", month: "long"}))}
                             {user && parseRow('E-mail', user.email)}
                             {user && parseRow('Phone', user.phone)}
+                            {user && parseRow('Birthday', new Date(user.birthday).toLocaleDateString("en-US", {day: "numeric", month: "long"}))}
                             {user && parseRow('Gender', user.gender)}
                             {user && parseRow('City', user.city)}
                             {user && parseRow('Home Gym', user.home_gym)}
@@ -109,18 +126,15 @@ function Profile() {
                         :
                         <div>
                             <form onSubmit={handleEditInfoSubmit}>
-                                <div className="profile-info d-flex justify-content-between w-75 py-3">
-                                    <p>Name</p>
-                                    <input type="text" value={name} onChange={(e) => setName(e.target.value)}/>
-                                </div>
-                                <div className="profile-info d-flex justify-content-between w-75 py-3">
-                                    <p>Birthday</p>
-                                    <input type="date" value={birthday ? new Date(birthday).toISOString().substring(0, 10) : ''} onChange={(e) => setBirthday(e.target.value)}/>
-                                </div>
+                                {user && parseRow('Name', user.name)}
                                 {user && parseRow('E-mail', user.email)}
                                 <div className="profile-info d-flex justify-content-between w-75 py-3">
                                     <p>Phone</p>
                                     <input type="number" value={phone} onChange={(e) => setPhone(e.target.value)}/>
+                                </div>
+                                <div className="profile-info d-flex justify-content-between w-75 py-3">
+                                    <p>Birthday</p>
+                                    <input type="date" value={birthday ? new Date(birthday).toISOString().substring(0, 10) : ''} onChange={(e) => setBirthday(e.target.value)}/>
                                 </div>
                                 <div className="profile-info d-flex justify-content-between w-75 py-3">
                                     <p>Gender</p>
@@ -138,8 +152,10 @@ function Profile() {
                                     <p>Home Gym</p>
                                     <input type="text" value={homeGym} onChange={(e) => setHomeGym(e.target.value)}/>
                                 </div>
-                                <div className="d-flex mt-4">
+                                <div className="d-flex w-75 justify-content-between mt-4">
                                     <button type="button" type="submit" className="profile-btn ">Save information
+                                    </button>
+                                    <button type="button" onClick={handleEditInfo} className="profile-btn ">Cancel
                                     </button>
                                 </div>
                             </form>
@@ -149,15 +165,11 @@ function Profile() {
                 <div className="col-4 mx-5">
 
                     <div className="profile-info d-flex justify-content-evenly w-75 py-3">
-                        <p>Total Clients</p>
-                        <p className="">4</p>
-                    </div>
-                    <div className="profile-info d-flex justify-content-evenly w-75 py-3">
-                        <p>Active Clients</p>
-                        <p className="">3</p>
+                        <p>Your Clients</p>
+                        <p className="">{clients.length}</p>
                     </div>
                     <div className="d-flex justify-content-between w-75 mt-4">
-                        <button type="button" className="profile-btn">View Clients</button>
+                        <button type="button" onClick={(e) => props.viewClients('clients')} className="profile-btn">View Clients</button>
                         <button type="button" className="profile-btn ">Add new</button>
                     </div>
                 </div>
@@ -168,6 +180,6 @@ function Profile() {
     )
 }
 
-export default Profile;
+export default TrainerProfile;
 
 

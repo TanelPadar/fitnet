@@ -2,15 +2,18 @@ import TrainingIcon from '../Images/training-icon.svg';
 import React, {useEffect, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/main.css';
+import axios from "axios";
 
 
-function Login() {
+function Login(props) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
 
-    const handleSubmit = (e) => {
+    const api = process.env.REACT_APP_API_KEY
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         // validate email
         if (!email) {
@@ -30,7 +33,19 @@ function Login() {
 
         // submit the form if there are no errors
         if (!emailError && !passwordError) {
-            // do something
+            try {
+                const response = await axios.post(api + '/login', {
+                    email: email,
+                    password: password
+                })
+                if (response.status === 202) {
+                    props.setLoggedIn(true)
+                    localStorage.setItem('userId', response.data.id)
+                }
+            } catch (error) {
+                console.log('Login failed',)
+                setEmailError(error.response.data.error)
+            }
         }
     };
 

@@ -1,11 +1,8 @@
-
-
 import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/main.css';
-import Profile from "./Profile";
+import TrainerProfile from "./TrainerProfile";
 import Clients from "./Clients";
-
 
 
 const Sidebar = () => {
@@ -37,11 +34,10 @@ const Sidebar = () => {
                    {generateNavItem('schedule', activeItem, handleItemClick)}
                    {generateNavItem('settings', activeItem, handleItemClick)}
                </nav>
-
            </div>
            <div className="col-10">
-               {activeItem === 'profile' && <Profile activeItem={activeItem} />}
-               {activeItem === 'clients' && <Clients activeItem={activeItem} />}
+               {activeItem === 'profile' && <TrainerProfile viewClients={setActiveItem}/>}
+               {activeItem === 'clients' && <Clients/>}
            </div>
            </div>
        </div>
