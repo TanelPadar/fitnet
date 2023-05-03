@@ -44,7 +44,12 @@ function Login(props) {
                 }
             } catch (error) {
                 console.log('Login failed',)
-                setEmailError(error.response.data.error)
+                console.log(error)
+                if (error.response.status === 401) {
+                    setPasswordError(error.response.data.error)
+                } else if (error.response.status === 404) {
+                    setEmailError(error.response.data.error)
+                }
             }
         }
     };

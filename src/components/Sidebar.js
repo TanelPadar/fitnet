@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/main.css';
 import TrainerProfile from "./TrainerProfile";
 import Clients from "./Clients";
+import Schedule from "./Schedule";
 
 
 const Sidebar = () => {
@@ -38,6 +39,7 @@ const Sidebar = () => {
            <div className="col-10">
                {activeItem === 'profile' && <TrainerProfile viewClients={setActiveItem}/>}
                {activeItem === 'clients' && <Clients/>}
+               {activeItem === 'schedule' && <Schedule/>}
            </div>
            </div>
        </div>
