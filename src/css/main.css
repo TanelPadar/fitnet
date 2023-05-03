@@ -183,3 +183,34 @@ body {
      font-size: 0.8rem;
  }
 
+
+ .signup-form-container .sign-in {
+     background-color: #44D442;
+     border: none;
+     cursor: pointer;
+     transition: all 0.5s ease-in-out;
+ }
+
+.signup-form-container .sign-in:hover {
+    background-color: #44D442;
+    border: none;
+    transform: scale(1.1);
+}
+
+ .signup-form-container a {
+     text-decoration: none;
+     color:black;
+ }
+
+ .signup-form-container .have-account-text  {
+     font-style: normal;
+     font-weight: 600;
+     font-size: 16px;
+     line-height: 19px;
+     color: #000000;
+ }
+
+
+.signup-form-container a:hover {
+    color: #0078AB;
+}

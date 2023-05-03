@@ -1,63 +1,73 @@
-import TrainingIcon from '../Images/training-icon.svg';
+import TrainingIcon from '../Images/training-svgrepo-com1.svg';
 import React, {useEffect, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/main.css';
 
 
-function Login() {
+
+function Signup() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [rePassword, setRePassword] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
+    const [rePasswordError, setRePasswordError] = useState('');
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // validate email
+    const validateInput = () => {
+        let valid = true;
         if (!email) {
             setEmailError('Email is required');
+            valid = false;
         } else if (!/\S+@\S+\.\S+/.test(email)) {
-            setEmailError('Invalid email address');
+            setEmailError('Please insert a valid email address.');
+            valid = false;
         } else {
             setEmailError('');
         }
 
-        // validate password
         if (password.length < 6) {
-            setPasswordError('Password must be at least 6 characters');
+            setPasswordError('Password is required.');
+            valid = false;
         } else {
             setPasswordError('');
         }
 
-        // submit the form if there are no errors
-        if (!emailError && !passwordError) {
-            // do something
+        if (rePassword !== password) {
+            setRePasswordError('Passwords do not match.');
+            valid = false;
+        } else {
+            setRePasswordError('');
         }
+
+        return valid;
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // validate email
+       validateInput()
     };
 
-    function validateInput(passwordError, emailError) {
+    function handleInputErrors(passwordError, emailError,rePasswordError) {
         return (
             <div className="form-group row justify-content-center">
-                {(passwordError && emailError) ?
-                    <div className="error d-block justify-content-center w-75">
-                        {passwordError ?
-                            <div className="login-input-error">{passwordError}</div> :
-                            <div className="login-input-error" style={{ height: '25px' }}></div>
-                        }
-                        {emailError ?
-                            <div className="login-input-error">{emailError}</div> :
-                            <div className="login-input-error" style={{ height: '25px' }}></div>
-                        }
+                {(passwordError && emailError && rePasswordError) ?
+                    <div className="error d-block justify-content-center w-75 my-2">
+                        {[passwordError, emailError, rePasswordError].map((error, index) => (
+                            <div key={index} className="login-input-error" style={{ height: error ? 'auto' : '' }}>
+                                {error}
+                            </div>
+                        ))}
                     </div> :
-                    <div className="error d-flex justify-content-center w-75">
-                        {passwordError ?
-                            <div className="login-input-error">{passwordError}</div> :
-                            <div className="login-input-error" style={{ height: '25px' }}></div>
-                        }
-                        {emailError ?
-                            <div className="login-input-error">{emailError}</div> :
-                            <div className="login-input-error" style={{ height: '25px' }}></div>
-                        }
+                    <div className="error d-block justify-content-center w-75 my-2">
+                        {[passwordError, emailError, rePasswordError].map((error, index) => (
+                            <div key={index} className="login-input-error" style={{ height: error ? 'auto' : '' }}>
+                                {error}
+                            </div>
+                        ))}
                     </div>
+
                 }
             </div>
         );
@@ -68,8 +78,8 @@ function Login() {
         <div className="login-bg vh-100 d-flex justify-content-center align-items-center">
             <div className="login-form">
                 <div className="d-block">
-                    <div><img src={TrainingIcon} alt="trainingicon"/></div>
-                    <div className="form-container">
+                    <div className="d-flex justify-content-start ms-4 mt-3"><img src={TrainingIcon} alt="trainingicon"/></div>
+                    <div className="signup-form-container">
                         <form onSubmit={handleSubmit}>
                             <div className="form-group row justify-content-center mb-3">
                                 <div className="d-flex w-75">
@@ -81,31 +91,55 @@ function Login() {
                                            onChange={(e) => setEmail(e.target.value)}></input>
                                 </div>
                             </div>
-                            <div className="form-group row justify-content-center">
+                            <div className="form-group row justify-content-center mb-3">
                                 <div className="d-flex w-75">
                                     <input type="password"
-                                           className={`form-control ${passwordError ? 'is-invalid' : ''}`}
+                                           className={`form-control ${passwordError  ? 'is-invalid' : ''}`}
                                            id="inputPassword3"
                                            placeholder="Password"
                                            value={password}
                                            onChange={(e) => setPassword(e.target.value)}></input>
                                 </div>
                             </div>
-                            <div className="form-group row justify-content-center">
-                                {validateInput(passwordError,emailError)}
+                            <div className="form-group row justify-content-center mb-3">
+                                <div className="d-flex w-75">
+                                    <input type="password"
+                                           className={`form-control ${rePassword !== password ? 'is-invalid' : ''}`}
+                                           id="inputPassword3"
+                                           placeholder="Re-type your Password"
+                                           value={rePassword}
+                                           onChange={(e) => {
+                                               setRePassword(e.target.value)
+                                           }}></input>
+                                </div>
                             </div>
-
                             <div className="form-group row justify-content-center">
                                 <div className="d-flex w-75">
-                                    <button type="submit" className="sign-in w-100">Sign in</button>
+                                    <input type="tel"
+                                           className={`form-control`}
+                                           id="phonenumber"
+                                           placeholder="Phone number"
+                                           value={phoneNumber}
+                                           onChange={(e) => setPhoneNumber(e.target.value)}
+                                           ></input>
                                 </div>
                             </div>
-                            <div className="form-group row justify-content-center mt-4">
-                                <div className="d-flex w-75 gap-1">
-                                    <button type="submit" className="forgot-password w-50">Forgot password</button>
-                                    <button type="submit" className="sign-up w-50">Sign Up</button>
+                            <div className="form-group row justify-content-center">
+                                {handleInputErrors(passwordError,emailError,rePasswordError)}
+                            </div>
+
+                            <div className="form-group row justify-content-center mx-2">
+                                <div className="d-flex w-75">
+                                    <button type="submit" className="sign-in w-100">Sign up</button>
                                 </div>
                             </div>
+
+                            <div className="form-group row justify-content-center mt-5">
+                                <div className="d-block justify-content-center">
+                                    <a href=""><p className="have-acccount-text fw-bold">Have an account?</p></a>
+                                </div>
+                            </div>
+
                         </form>
                     </div>
                 </div>
@@ -114,6 +148,6 @@ function Login() {
     )
 }
 
-export default Login;
+export default Signup;
 
 

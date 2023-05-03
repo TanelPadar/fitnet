@@ -38,7 +38,7 @@ function Login() {
         return (
             <div className="form-group row justify-content-center">
                 {(passwordError && emailError) ?
-                    <div className="error d-block justify-content-center w-75">
+                    <div className="error d-block justify-content-center w-75 my-2">
                         {passwordError ?
                             <div className="login-input-error">{passwordError}</div> :
                             <div className="login-input-error" style={{ height: '25px' }}></div>
