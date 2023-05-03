@@ -1,13 +1,31 @@
 
-import React from 'react';
+import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/main.css';
+import axios from "axios";
 
 
 
 function Profile () {
+    const [user, setUser] = useState(null)
+    const api = 'http://localhost:4000'
+    const getUserInformation = async (userId) => {
+        axios.get(api + `/trainers/${userId}`)
+            .then((response) => {
+                const userData = response.data
+                setUser(userData)
+            })
+            .catch(() => console.log('No user found'))
+    }
+
+    getUserInformation('644faf4484fe1969b0782942')
 
     const parseRow = (name,value) => {
+        if (name === "Birthday" && value) {
+            const date = new Date(value);
+            const options = { day: "numeric", month: "long"};
+            value = date.toLocaleDateString("en-US", options);
+        }
         return (
             <div className="profile-info d-flex justify-content-between w-75 py-3">
                 <p>{name}</p>
@@ -26,12 +44,12 @@ function Profile () {
             <div className="row mt-5">
                 <div className="col-6 mx-5">
                     <div>
-                        {parseRow('Name', 'Sander Palk')}
-                        {parseRow('Birthday', '3. November 2002')}
-                        {parseRow('Gender', 'Male')}
-                        {parseRow('E-mail', 'Sander@voco.ee')}
-                        {parseRow('City', 'Tartu')}
-                        {parseRow('Home city', 'Tasku Gym!')}
+                        {user && parseRow('Name', user.name)}
+                        {user && parseRow('Birthday', user.birthday)}
+                        {user && parseRow('Gender', user.gender)}
+                        {user && parseRow('E-mail', user.email)}
+                        {user && parseRow('City', user.city)}
+                        {user && parseRow('Home city', user.home_gym)}
                         <div className="d-flex mt-4"><button type="button" className="profile-btn ">Edit information</button></div>
                     </div>
 
