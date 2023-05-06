@@ -78,7 +78,7 @@ function TrainerProfile(props) {
         }
 
         try {
-            const response = await  axios.put(api + `/trainers/${userId}`, updatedFields)
+            await  axios.put(api + `/trainers/${userId}`, updatedFields)
             setEditInfo(false)
         } catch (error) {
             console.log("Error", error)

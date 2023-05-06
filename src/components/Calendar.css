@@ -7,3 +7,7 @@
 .react-calendar__month-view__days {
     height: 400px;
 }
+
+.react-calendar .has-workout {
+    background-color: #96E6FF;
+}
