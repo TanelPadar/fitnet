@@ -19,7 +19,6 @@ function Clients () {
         try {
             const response = await axios.get(api + `/trainer/clients/${userId}`)
             setClients(response.data)
-            await console.log(clients)
         } catch (error) {
             console.log('No clients found', error)
         }

@@ -11,3 +11,11 @@
 .react-calendar .has-workout {
     background-color: #96E6FF;
 }
+
+.day-workout {
+    background-color: #96E6FF;
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px gray;
+    margin: 1% auto 0;
+}
