@@ -99,7 +99,7 @@ function TrainerProfile(props) {
     return (
         <div>
             <div class="row mt-2">
-                <div className="col-12 h1 ">PROFILE</div>
+                <h1>PROFILE</h1>
             </div>
 
             <div className="row mt-5">

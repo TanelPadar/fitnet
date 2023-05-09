@@ -107,8 +107,14 @@ function Schedule() {
         }
         return (
             <div>
-                <button onClick={closeDayView}>Close day view</button>
-                <h2>{selectedDate.toLocaleDateString()}</h2>
+                <div className="row">
+                    <h1>WORKOUTS</h1>
+                </div>
+                <h5>{selectedDate.toLocaleDateString()}</h5>
+                <div onClick={closeDayView} className="d-flex align-items-center justify-content-start mx-auto w-75 gap-1">
+                    <i className="fas fa-arrow-left"></i>
+                    <p className="m-0 fw-bold">Back to calendar</p>
+                </div>
                 {!newWorkoutForm ? (
                         <div>
                             {selectedDayWorkouts.map(selectedDayWorkout => (
@@ -122,35 +128,42 @@ function Schedule() {
                                     })}</div>
                                     <div className={"w-25 border-end border-dark"}>{selectedDayWorkout.userName}</div>
                                     <div className={"w-25 border-end border-dark"}>{selectedDayWorkout.description}</div>
-                                    <div className={"d-flex flex-row justify-content-around w-25"}>
-                                        <button>Edit</button>
-                                        <button onClick={() => deleteWorkout(selectedDayWorkout._id)}>Delete</button>
+                                    <div className="d-flex flex-row justify-content gap-2">
+                                        <i className="fas fa-edit"></i>
+                                        <i onClick={() => deleteWorkout(selectedDayWorkout._id)} className="fas fa-trash"></i>
                                     </div>
                                 </div>
                             ))}
-                            <button onClick={toggleNewWorkoutForm}>Add new workout</button>
+                            <div onClick={toggleNewWorkoutForm} className="d-flex align-items-center justify-content-center mt-3">
+                                <i className="fas fa-plus"></i>
+                                <p className="m-0 fw-bold">Add workout</p>
+                            </div>
                         </div>
                     ) :
                     <div>
-                        <form className="d-flex flex-column">
-                            <label>Time
+                        <form className="d-flex flex-row justify-content-center gap-3 my-3">
+                            <label className="d-flex gap-1">Time:
                                 <input className={calendarError ? 'border border-danger' : ''}
                                        value={newWorkoutTime || new Date(selectedDate.getTime() - (selectedDate.getTimezoneOffset() * 60000)).toISOString().slice(0, -8)}
                                        name={"workoutTime"} type={"datetime-local"}
                                        onChange={(e) => setNewWorkoutTime(e.target.value)}/></label>
-                            <label>Client
+                            <label className="d-flex gap-1">Client:
                                 <select name="client" onChange={(e) => setNewWorkoutUser(e.target.value)}>
                                     <option value={userId}>Me</option>
                                     {clients.map(client => (
                                         <option key={client._id} value={client._id}>{client.name}</option>
                                     ))}
                                 </select></label>
-                            <label>Description
+                            <label className="d-flex gap-1">Description:
                                 <input type={"text"}
                                        onChange={(e) => setNewWorkoutDescription(e.target.value)}/></label>
                         </form>
-                        <button onClick={addNewWorkout}>Add new</button>
-                        <button onClick={toggleNewWorkoutForm}>Close</button>
+
+                        <div className="d-flex justify-content-center gap-2 align-items-center">
+                        <i onClick={addNewWorkout} style={{color: '#005073'}} className="fa-fw fas fa-save"></i>
+                        <p className="my-0">Save</p>
+                        </div>
+
                     </div>
                 }
             </div>
@@ -166,9 +179,13 @@ function Schedule() {
 
     return (
         <div>
+
             {!dayView ?
+                <div><div className="row mb-5">
+                    <h1>SCHEDULE</h1>
+                </div>
                 <Calendar className={"calendar"} onChange={onChange} value={value} tileContent={hasWorkout}
-                          tileClassName={hasWorkoutStyle} onClickDay={(value) => viewDay(value)}/>
+                          tileClassName={hasWorkoutStyle} onClickDay={(value) => viewDay(value)}/></div>
                 :
                 <div>
                     {!exerciseView ? dayViewRender() : <Exercises WorkoutId={workoutId}/>}
