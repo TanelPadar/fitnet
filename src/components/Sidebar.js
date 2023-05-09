@@ -21,6 +21,10 @@ const Sidebar = () => {
             </a>
         );
     }
+    function logOut() {
+        localStorage.removeItem('userId')
+        window.location.reload(false)
+    }
 
     const handleItemClick = (item) => {
         setActiveItem(item);
@@ -34,6 +38,13 @@ const Sidebar = () => {
                    {generateNavItem('clients', activeItem, handleItemClick)}
                    {generateNavItem('schedule', activeItem, handleItemClick)}
                    {generateNavItem('settings', activeItem, handleItemClick)}
+                   <a className="profile-item" onClick={logOut}>
+                       <i className="fas fa-power-off"></i> Log out
+                   </a>
+
+
+
+
                </nav>
            </div>
            <div className="col-10">

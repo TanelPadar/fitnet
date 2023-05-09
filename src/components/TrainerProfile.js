@@ -94,17 +94,12 @@ function TrainerProfile(props) {
         )
     }
 
-    function logOut() {
-        localStorage.removeItem('userId')
-        window.location.reload(false)
-    }
+
 
     return (
         <div>
-            <div class="row bg-secondary">
-                <div className="col-8 h2 text-white">Your information</div>
-                <div className="col-2 h2 text-white">Stats</div>
-                <div className="col-2"><button onClick={logOut} className="profile-btn">Log out</button></div>
+            <div class="row mt-2">
+                <div className="col-12 h1 ">PROFILE</div>
             </div>
 
             <div className="row mt-5">
@@ -163,14 +158,9 @@ function TrainerProfile(props) {
                     }
                 </div>
                 <div className="col-4 mx-5">
-
                     <div className="profile-info d-flex justify-content-evenly w-75 py-3">
                         <p>Your Clients</p>
                         <p className="">{clients.length}</p>
-                    </div>
-                    <div className="d-flex justify-content-between w-75 mt-4">
-                        <button type="button" onClick={(e) => props.viewClients('clients')} className="profile-btn">View Clients</button>
-                        <button type="button" className="profile-btn ">Add new</button>
                     </div>
                 </div>
             </div>

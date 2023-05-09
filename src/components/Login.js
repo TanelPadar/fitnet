@@ -34,6 +34,7 @@ function Login(props) {
         // submit the form if there are no errors
         if (!emailError && !passwordError) {
             try {
+                console.log(email,password)
                 const response = await axios.post(api + '/login', {
                     email: email,
                     password: password
