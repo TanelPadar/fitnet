@@ -24,6 +24,17 @@ function Clients () {
         }
     }
 
+    const deleteClientFromTrainer = async (clientId) => {
+        const trainerId = localStorage.getItem('userId')
+
+        try {
+            await axios.put(api + `/remove_client/${trainerId}/${clientId}`)
+            getTrainerClients()
+        } catch (error) {
+            console.log('Error removing client', error)
+        }
+    }
+
     useEffect(() => {
         getTrainerClients()
     }, [])
@@ -39,27 +50,28 @@ function Clients () {
                         <input type="text" className="input-search dark" placeholder="Type to Search..."></input>
                     </div></div>
             </div>
-            <div className="d-flex align-items-center client-headers">
-                <div className="d-flex justify-content-around w-50">
-                    <p className="m-0 w-25">Name</p>
-                    <p className="m-0 w-25">Phone</p>
-                </div>
-            </div>
-            <div className="d-block mt-5">
-                {clients.map(client => (
-                    <div className="d-flex mb-3">
-                        <div className="d-flex justify-content-around w-50">
-                            <p className="m-0 w-25 fs-4">{client.name}</p>
-                            <p className="m-0 w-25 fs-4">{client.phone}</p>
-                        </div>
-                        <div className="d-flex justify-content-center w-50 gap-5">
-                            <button type="button" className="clients-info-btn">Info</button>
-                            <button type="button" className="clients-edit-btn">Edit</button>
-                            <img src={Deletebtn} alt="delete_button" />
-                        </div>
-                    </div>
-                    ))}
-            </div>
+
+            <table className="table table-hover table-striped table-responsive mt-5 ">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Phone Nr</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {clients.map((client, index) => (
+                    <tr key={index}>
+                        <th scope="row">{index + 1}</th>
+                        <td>{client.name}</td>
+                        <td>{client.phone}</td>
+                        <td><i onClick={()=>deleteClientFromTrainer(client._id)} className="fas fa-trash-alt"></i>
+                        </td>
+                    </tr>
+                ))}
+                </tbody>
+            </table>
         </div>
     )
 }
