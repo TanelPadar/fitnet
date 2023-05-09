@@ -14,12 +14,12 @@ function Clients () {
 
     return(
         <div>
-            <div class="row bg-secondary">
-                <div className="col-11 justify-content-center align-items-center d-flex h2 text-white">Your Client List</div>
+            <div class="row mt-2">
+                <div className="col-11 justify-content-center align-items-center d-flex h1">CLIENTS</div>
                 <div className="col-1 h2 text-white d-flex justify-content-end">
                     <div className="search-box">
                         <button className="btn-search"><i className="fas fa-search"></i></button>
-                        <input type="text" className="input-search" placeholder="Type to Search..."></input>
+                        <input type="text" className="input-search dark" placeholder="Type to Search..."></input>
                     </div></div>
             </div>
             <div className="d-flex align-items-center client-headers">

@@ -2,20 +2,31 @@ import TrainingIcon from '../Images/training-svgrepo-com1.svg';
 import React, {useEffect, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/main.css';
+import axios from "axios";
 
 
 
-function Signup() {
+function Signup(props) {
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [rePassword, setRePassword] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
+    const [nameError, setNameError] = useState('');
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [rePasswordError, setRePasswordError] = useState('');
+    const api = process.env.REACT_APP_API_KEY
 
     const validateInput = () => {
         let valid = true;
+        if (!name) {
+            setNameError('Name is required');
+            valid = false;
+        } else {
+            setNameError('');
+        }
+
         if (!email) {
             setEmailError('Email is required');
             valid = false;
@@ -43,25 +54,42 @@ function Signup() {
         return valid;
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // validate email
-       validateInput()
+
+        if (validateInput() === true) {
+            try {
+                 await axios.post(api + '/register', {
+                    name: name,
+                    email: email,
+                    password: password,
+                    phone: phoneNumber
+                }).then(res => {
+                     if (res.status === 200) {
+                         props.registration(true)
+                     }
+                 })
+            } catch (error) {
+                console.log('Registration failed', error)
+                setEmailError(error.response.data.error)
+            }
+        }
+
     };
 
     function handleInputErrors(passwordError, emailError,rePasswordError) {
         return (
             <div className="form-group row justify-content-center">
-                {(passwordError && emailError && rePasswordError) ?
+                {(passwordError && emailError && rePasswordError && nameError) ?
                     <div className="error d-block justify-content-center w-75 my-2">
-                        {[passwordError, emailError, rePasswordError].map((error, index) => (
+                        {[passwordError, emailError, rePasswordError,nameError].map((error, index) => (
                             <div key={index} className="login-input-error" style={{ height: error ? 'auto' : '' }}>
                                 {error}
                             </div>
                         ))}
                     </div> :
                     <div className="error d-block justify-content-center w-75 my-2">
-                        {[passwordError, emailError, rePasswordError].map((error, index) => (
+                        {[passwordError, emailError, rePasswordError, nameError].map((error, index) => (
                             <div key={index} className="login-input-error" style={{ height: error ? 'auto' : '' }}>
                                 {error}
                             </div>
@@ -81,6 +109,16 @@ function Signup() {
                     <div className="d-flex justify-content-start ms-4 mt-3"><img src={TrainingIcon} alt="trainingicon"/></div>
                     <div className="signup-form-container">
                         <form onSubmit={handleSubmit}>
+                            <div className="form-group row justify-content-center mb-3">
+                                <div className="d-flex w-75">
+                                    <input type="name"
+                                           className={`form-control ${nameError ? 'is-invalid' : ''}`}
+                                           id="name"
+                                           placeholder="Name"
+                                           value={name}
+                                           onChange={(e) => setName(e.target.value)}></input>
+                                </div>
+                            </div>
                             <div className="form-group row justify-content-center mb-3">
                                 <div className="d-flex w-75">
                                     <input type="email"
@@ -130,11 +168,11 @@ function Signup() {
 
                             <div className="form-group row justify-content-center mx-2">
                                 <div className="d-flex w-75">
-                                    <button type="submit" className="sign-in w-100">Sign up</button>
+                                    <button type="submit" onClick={handleSubmit} className="sign-in w-100">Sign up</button>
                                 </div>
                             </div>
 
-                            <div className="form-group row justify-content-center mt-5">
+                            <div className="form-group row justify-content-center mt-2">
                                 <div className="d-block justify-content-center">
                                     <a href=""><p className="have-acccount-text fw-bold">Have an account?</p></a>
                                 </div>
