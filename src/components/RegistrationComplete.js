@@ -1,12 +1,11 @@
 import TrainingIcon from '../Images/training-svgrepo-com1.svg';
-import React, {useEffect, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/main.css';
 
 
 
 
-function Registrationcomplete(props) {
+function RegistrationComplete(props) {
 
     return (
         <div className="login-bg vh-100 d-flex justify-content-center align-items-center">
@@ -16,7 +15,7 @@ function Registrationcomplete(props) {
                     <div className="signup-form-container align-items-center h-100">
                         <h1>Thank you!</h1>
                         <h6>Registration was successful.</h6>
-                        <button  onClick={props.setLoggedIn(false) }  className="sign-in w-50">Sign in</button>
+                        <button  onClick={() => props.setSignupView(false) }  className="sign-in w-50">Sign in</button>
                     </div>
                 </div>
             </div>
@@ -24,6 +23,6 @@ function Registrationcomplete(props) {
     )
 }
 
-export default Registrationcomplete;
+export default RegistrationComplete;
 
 

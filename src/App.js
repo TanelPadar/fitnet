@@ -3,7 +3,7 @@ import './App.css';
 import Login from "./components/Login";
 import {useEffect, useState} from "react";
 import Signup from "./components/Signup";
-import Registrationcomplete from "./components/Registrationcomplete";
+import RegistrationComplete from "./components/RegistrationComplete";
 
 function App() {
     const [loggedIn, setLoggedIn] = useState(false)

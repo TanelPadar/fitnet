@@ -38,7 +38,6 @@ function TrainerProfile(props) {
         try {
             const response = await axios.get(api + `/trainer/clients/${userId}`)
             setClients(response.data)
-            await console.log(clients)
         } catch (error) {
             console.log('No clients found', error)
         }
@@ -98,7 +97,7 @@ function TrainerProfile(props) {
 
     return (
         <div>
-            <div class="row mt-2">
+            <div className="row mt-2">
                 <div className="col-12 h1 ">PROFILE</div>
             </div>
 
