@@ -3,6 +3,7 @@ import 'react-calendar/dist/Calendar.css';
 import {useEffect, useState} from "react";
 import "./Calendar.css"
 import axios from "axios";
+import Exercises from "./Exercises";
 
 function Schedule() {
     const api = process.env.REACT_APP_API_KEY
@@ -18,6 +19,8 @@ function Schedule() {
     const [newWorkoutTime, setNewWorkoutTime] = useState('')
     const [newWorkoutDescription, setNewWorkoutDescription] = useState('')
     const [calendarError, setCalendarError] = useState(false)
+    const [exerciseView, setExerciseView] = useState(false)
+    const [workoutId, setWorkoutId] = useState('')
     const selectedDayWorkouts = []
 
     useEffect(() => {
@@ -91,6 +94,11 @@ function Schedule() {
         setWorkouts(prevWorkouts => prevWorkouts.filter(workout => workout._id !== workoutId));
     }
 
+    function toggleExerciseView(id) {
+        setWorkoutId(id)
+        setExerciseView(!exerciseView)
+    }
+
     function dayViewRender() {
         for (const workout of workouts) {
             if (selectedDate.toLocaleDateString() === new Date(workout.date).toLocaleDateString()) {
@@ -102,30 +110,34 @@ function Schedule() {
                 <button onClick={closeDayView}>Close day view</button>
                 <h2>{selectedDate.toLocaleDateString()}</h2>
                 {!newWorkoutForm ? (
-                    <div>
-                        {selectedDayWorkouts.map(selectedDayWorkout => (
-                            <div key={selectedDayWorkout._id} className={"d-flex flex-row justify-content-around day-workout w-75"}>
-                                <div
-                                    className={"w-25 border-end border-dark"}>{new Date(selectedDayWorkout.date).toLocaleTimeString('en-GB', {
-                                    timeZone: 'EET',
-                                    hour: 'numeric',
-                                    minute: 'numeric'
-                                })}</div>
-                                <div className={"w-25 border-end border-dark"}>{selectedDayWorkout.userName}</div>
-                                <div className={"w-25 border-end border-dark"}>{selectedDayWorkout.description}</div>
-                                <div className={"d-flex flex-row justify-content-around w-25"}>
-                                    <button>Edit</button>
-                                    <button onClick={() => deleteWorkout(selectedDayWorkout._id)}>Delete</button>
+                        <div>
+                            {selectedDayWorkouts.map(selectedDayWorkout => (
+                                <div  onClick={() =>toggleExerciseView(selectedDayWorkout._id)} key={selectedDayWorkout._id}
+                                     className={"d-flex flex-row justify-content-around day-workout w-75"}>
+                                    <div
+                                        className={"w-25 border-end border-dark"}>{new Date(selectedDayWorkout.date).toLocaleTimeString('en-GB', {
+                                        timeZone: 'EET',
+                                        hour: 'numeric',
+                                        minute: 'numeric'
+                                    })}</div>
+                                    <div className={"w-25 border-end border-dark"}>{selectedDayWorkout.userName}</div>
+                                    <div className={"w-25 border-end border-dark"}>{selectedDayWorkout.description}</div>
+                                    <div className={"d-flex flex-row justify-content-around w-25"}>
+                                        <button>Edit</button>
+                                        <button onClick={() => deleteWorkout(selectedDayWorkout._id)}>Delete</button>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
-                        <button onClick={toggleNewWorkoutForm}>Add new workout</button>
-                    </div>
-                ):
+                            ))}
+                            <button onClick={toggleNewWorkoutForm}>Add new workout</button>
+                        </div>
+                    ) :
                     <div>
                         <form className="d-flex flex-column">
                             <label>Time
-                                <input className={calendarError ? 'border border-danger' : ''} value={newWorkoutTime || new Date(selectedDate.getTime() - (selectedDate.getTimezoneOffset() * 60000)).toISOString().slice(0, -8)} name={"workoutTime"} type={"datetime-local"} onChange={(e) => setNewWorkoutTime(e.target.value)}/></label>
+                                <input className={calendarError ? 'border border-danger' : ''}
+                                       value={newWorkoutTime || new Date(selectedDate.getTime() - (selectedDate.getTimezoneOffset() * 60000)).toISOString().slice(0, -8)}
+                                       name={"workoutTime"} type={"datetime-local"}
+                                       onChange={(e) => setNewWorkoutTime(e.target.value)}/></label>
                             <label>Client
                                 <select name="client" onChange={(e) => setNewWorkoutUser(e.target.value)}>
                                     <option value={userId}>Me</option>
@@ -134,7 +146,8 @@ function Schedule() {
                                     ))}
                                 </select></label>
                             <label>Description
-                            <input type={"text"} onChange={(e) => setNewWorkoutDescription(e.target.value)}/></label>
+                                <input type={"text"}
+                                       onChange={(e) => setNewWorkoutDescription(e.target.value)}/></label>
                         </form>
                         <button onClick={addNewWorkout}>Add new</button>
                         <button onClick={toggleNewWorkoutForm}>Close</button>
@@ -158,7 +171,7 @@ function Schedule() {
                           tileClassName={hasWorkoutStyle} onClickDay={(value) => viewDay(value)}/>
                 :
                 <div>
-                    {dayViewRender()}
+                    {!exerciseView ? dayViewRender() : <Exercises WorkoutId={workoutId}/>}
                 </div>
             }
         </div>
