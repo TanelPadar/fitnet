@@ -21,6 +21,7 @@ function Schedule() {
     const [calendarError, setCalendarError] = useState(false)
     const [exerciseView, setExerciseView] = useState(false)
     const [workoutId, setWorkoutId] = useState('')
+    const [workoutDesc, setWorkoutDesc] = useState('')
     const selectedDayWorkouts = []
 
     useEffect(() => {
@@ -94,7 +95,8 @@ function Schedule() {
         setWorkouts(prevWorkouts => prevWorkouts.filter(workout => workout._id !== workoutId));
     }
 
-    function toggleExerciseView(id) {
+    function toggleExerciseView(id,description) {
+        setWorkoutDesc(description)
         setWorkoutId(id)
         setExerciseView(!exerciseView)
     }
@@ -107,18 +109,20 @@ function Schedule() {
         }
         return (
             <div>
-                <div className="row">
-                    <h1>WORKOUTS</h1>
-                </div>
-                <h5>{selectedDate.toLocaleDateString()}</h5>
-                <div onClick={closeDayView} className="d-flex align-items-center justify-content-start mx-auto w-75 gap-1">
-                    <i className="fas fa-arrow-left"></i>
-                    <p className="m-0 fw-bold">Back to calendar</p>
-                </div>
+
+                    <h4>Treening</h4>
+                    <h6>{selectedDate.toLocaleDateString()}</h6>
+                {!newWorkoutForm ? (
+                    <div onClick={closeDayView} className="text-button d-flex align-items-center mx-auto w-75 gap-1">
+                        <i className="fas fa-arrow-left"></i>
+                        <p className="m-0 fw-bold">Tagasi</p>
+                    </div>
+                ) : '' }
+
                 {!newWorkoutForm ? (
                         <div>
                             {selectedDayWorkouts.map(selectedDayWorkout => (
-                                <div  onClick={() =>toggleExerciseView(selectedDayWorkout._id)} key={selectedDayWorkout._id}
+                                <div  onClick={() =>toggleExerciseView(selectedDayWorkout._id,selectedDayWorkout.description)} key={selectedDayWorkout._id}
                                      className={"d-flex flex-row justify-content-around day-workout w-75"}>
                                     <div
                                         className={"w-25 border-end border-dark"}>{new Date(selectedDayWorkout.date).toLocaleTimeString('en-GB', {
@@ -134,34 +138,43 @@ function Schedule() {
                                     </div>
                                 </div>
                             ))}
-                            <div onClick={toggleNewWorkoutForm} className="d-flex align-items-center justify-content-center mt-3">
+                            <div onClick={toggleNewWorkoutForm} className="text-button d-flex align-items-center justify-content-center mt-3 gap-1">
                                 <i className="fas fa-plus"></i>
-                                <p className="m-0 fw-bold">Add workout</p>
+                                <p className="m-0 fw-bold">Lisa Treening</p>
                             </div>
                         </div>
                     ) :
                     <div>
-                        <form className="d-flex flex-row justify-content-center gap-3 my-3">
-                            <label className="d-flex gap-1">Time:
-                                <input className={calendarError ? 'border border-danger' : ''}
-                                       value={newWorkoutTime || new Date(selectedDate.getTime() - (selectedDate.getTimezoneOffset() * 60000)).toISOString().slice(0, -8)}
-                                       name={"workoutTime"} type={"datetime-local"}
-                                       onChange={(e) => setNewWorkoutTime(e.target.value)}/></label>
-                            <label className="d-flex gap-1">Client:
-                                <select name="client" onChange={(e) => setNewWorkoutUser(e.target.value)}>
+                        <table className="table mt-5">
+                            <thead>
+                            <tr>
+                                <th scope="col">Aeg</th>
+                                <th scope="col">Klient</th>
+                                <th scope="col">Kirjeldus</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td> <input className={calendarError ? 'border border-danger' : ''}
+                                            value={newWorkoutTime || new Date(selectedDate.getTime() - (selectedDate.getTimezoneOffset() * 60000)).toISOString().slice(0, -8)}
+                                            name={"workoutTime"} type={"datetime-local"}
+                                            onChange={(e) => setNewWorkoutTime(e.target.value)} className="form-control" aria-label="Sizing example input"
+                                            aria-describedby="inputGroup-sizing-sm"/></td>
+                                <td> <select name="client" className="form-select" aria-label="Default select example" onChange={(e) => setNewWorkoutUser(e.target.value)} >
                                     <option value={userId}>Me</option>
                                     {clients.map(client => (
                                         <option key={client._id} value={client._id}>{client.name}</option>
                                     ))}
-                                </select></label>
-                            <label className="d-flex gap-1">Description:
-                                <input type={"text"}
-                                       onChange={(e) => setNewWorkoutDescription(e.target.value)}/></label>
-                        </form>
-
-                        <div className="d-flex justify-content-center gap-2 align-items-center">
-                        <i onClick={addNewWorkout} style={{color: '#005073'}} className="fa-fw fas fa-save"></i>
-                        <p className="my-0">Save</p>
+                                </select></td>
+                                <td> <input type={"text"}
+                                            onChange={(e) => setNewWorkoutDescription(e.target.value)} className="form-control" aria-label="Sizing example input"
+                                            aria-describedby="inputGroup-sizing-sm"/></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div className="schedule-save d-flex justify-content-end align-items-center">
+                            <p className=" my-0">salvesta</p>
+                            <i onClick={addNewWorkout}  className="fa-fw fas fa-save"></i>
                         </div>
 
                     </div>
@@ -179,16 +192,13 @@ function Schedule() {
 
     return (
         <div>
-
             {!dayView ?
-                <div><div className="row mb-5">
-                    <h1>SCHEDULE</h1>
-                </div>
-                <Calendar className={"calendar"} onChange={onChange} value={value} tileContent={hasWorkout}
-                          tileClassName={hasWorkoutStyle} onClickDay={(value) => viewDay(value)}/></div>
+                <div><h4 className="my-3">AJAKAVA</h4>
+                <div className="container w-75 mt-5"><Calendar className={"calendar mx-5 w-auto"} onChange={onChange} value={value} tileContent={hasWorkout}
+                          tileClassName={hasWorkoutStyle} onClickDay={(value) => viewDay(value)}/></div></div>
                 :
                 <div>
-                    {!exerciseView ? dayViewRender() : <Exercises WorkoutId={workoutId}/>}
+                    {!exerciseView ? dayViewRender() : <Exercises WorkoutId={workoutId} WorkoutDesc={workoutDesc}/>}
                 </div>
             }
         </div>

@@ -8,7 +8,6 @@ function TrainerProfile(props) {
     const [user, setUser] = useState(null)
     const [editInfo, setEditInfo] = useState(true)
     const [clients, setClients] = useState([])
-
     const [name, setName] = useState('')
     const [birthday, setBirthday] = useState('')
     const [email, setEmail] = useState('')
@@ -84,82 +83,86 @@ function TrainerProfile(props) {
         }
     }
 
-    const parseRow = (name, value) => {
+    const parseRow = (name, value, icon) => {
         return (
-            <div className="profile-info d-flex justify-content-between w-75 py-3">
-                <p>{name}</p>
-                <p className="pe-5">{value}</p>
+            <div className="profile-info d-flex justify-content-start align-items-center gap-3 my-2">
+                <div>{icon}</div>
+                <div className="d-block">
+                    <p className="text-muted d-flex"><small>{name}</small></p>
+                    <div><p className="">{value}</p></div>
+                </div>
             </div>
         )
     }
 
-
-
     return (
         <div>
-            <div className="row mt-2">
-                <div className="col-12 h1 ">PROFILE</div>
-            </div>
-
-            <div className="row mt-5">
-                <div className="col-6 mx-5">
+            <h4 className="my-3">Profiil</h4>
+            <div className="justify-content-center row mt-5">
+                <div className="container d-flex justify-content-evenly">
                     {editInfo ?
-                        <div>
-                            {user && parseRow('Name', user.name)}
-                            {user && parseRow('E-mail', user.email)}
-                            {user && parseRow('Phone', user.phone)}
-                            {user && parseRow('Birthday', new Date(user.birthday).toLocaleDateString("en-US", {day: "numeric", month: "long"}))}
-                            {user && parseRow('Gender', user.gender)}
-                            {user && parseRow('City', user.city)}
-                            {user && parseRow('Home Gym', user.home_gym)}
-                            <div className="d-flex mt-4">
-                                <button type="button" onClick={handleEditInfo} className="profile-btn ">Edit information
+                        <div className="flex-column">
+                            {user && parseRow('Name', user.name, <div className="profile-icon"><i className="fas fa-user-circle fa-fw"></i></div>)}
+                            {user && parseRow('E-mail', user.email, <div className="profile-icon"><i className="fas fa-envelope fa-fw"></i></div>)}
+                            {user && parseRow('Phone', user.phone, <div className="profile-icon"><i className="fas fa-phone-alt fa-fw"></i></div>)}
+                            {user && parseRow('Birthday', new Date(user.birthday).toLocaleDateString("en-US", {day: "numeric", month: "long"}),
+                                <div className="profile-icon"><i className="fas fa-birthday-cake fa-fw"></i></div>)}
+                            {user && parseRow('Gender', user.gender, <div className="profile-icon"><i className="fas fa-venus-mars fa-fw"></i></div>)}
+                            {user && parseRow('City', user.city, <div className="profile-icon"><i className="fas fa-city fa-fw" ></i></div>)}
+                            {user && parseRow('Home Gym', user.home_gym, <div className="profile-icon"><i className="fas fa-dumbbell fa-fw"></i></div>)}
+                            <div className="d-flex mt-5">
+                                <button type="button" onClick={handleEditInfo} className="profile-btn">Edit profile
                                 </button>
                             </div>
                         </div>
                         :
-                        <div>
+                        <div className="">
                             <form onSubmit={handleEditInfoSubmit}>
                                 {user && parseRow('Name', user.name)}
                                 {user && parseRow('E-mail', user.email)}
-                                <div className="profile-info d-flex justify-content-between w-75 py-3">
-                                    <p>Phone</p>
-                                    <input type="number" value={phone} onChange={(e) => setPhone(e.target.value)}/>
+                                <div className="profile-info d-block justify-content-start ps-2">
+                                    <p className="d-flex text-muted">Phone</p>
+                                        <input type="number" value={phone} onChange={(e) => setPhone(e.target.value)} className="form-control" aria-label="Sizing example input"
+                                               aria-describedby="inputGroup-sizing-sm"></input>
+                                    <div>
+                                        <p className="d-flex text-muted">Birthday</p>
+                                        <input type="date" value={birthday ? new Date(birthday).toISOString().substring(0, 10) : ''} onChange={(e) => setBirthday(e.target.value)} className="form-control" aria-label="Sizing example input"
+                                               aria-describedby="inputGroup-sizing-sm"/>
+                                    </div>
+                                    <div>
+                                        <p className="d-flex text-muted">Gender</p>
+                                        <select className="form-select" aria-label="Default select example" name="gender" onChange={(e) => setGender(e.target.value)}>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <p className="d-flex text-muted">City</p>
+                                        <input type="text" value={city} onChange={(e) => setCity(e.target.value)} className="form-control" aria-label="Sizing example input"
+                                               aria-describedby="inputGroup-sizing-sm"/>
+                                    </div>
+                                    <div>
+                                        <p className="d-flex text-muted">Home Gym</p>
+                                        <input type="text" value={homeGym} onChange={(e) => setHomeGym(e.target.value)} className="form-control" aria-label="Sizing example input"
+                                               aria-describedby="inputGroup-sizing-sm"/>
+                                    </div>
                                 </div>
-                                <div className="profile-info d-flex justify-content-between w-75 py-3">
-                                    <p>Birthday</p>
-                                    <input type="date" value={birthday ? new Date(birthday).toISOString().substring(0, 10) : ''} onChange={(e) => setBirthday(e.target.value)}/>
-                                </div>
-                                <div className="profile-info d-flex justify-content-between w-75 py-3">
-                                    <p>Gender</p>
-                                    <select name="gender" onChange={(e) => setGender(e.target.value)}>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                        <option value="Other">Other</option>
-                                    </select>
-                                </div>
-                                <div className="profile-info d-flex justify-content-between w-75 py-3">
-                                    <p>City</p>
-                                    <input type="text" value={city} onChange={(e) => setCity(e.target.value)}/>
-                                </div>
-                                <div className="profile-info d-flex justify-content-between w-75 py-3">
-                                    <p>Home Gym</p>
-                                    <input type="text" value={homeGym} onChange={(e) => setHomeGym(e.target.value)}/>
-                                </div>
-                                <div className="d-flex w-75 justify-content-between mt-4">
-                                    <button type="button" type="submit" className="profile-btn ">Save information
+                                <div className="d-flex gap-1 justify-content-between mt-5">
+                                    <button type="button" type="submit" className="profile-btn">Save information
                                     </button>
                                     <button type="button" onClick={handleEditInfo} className="profile-btn ">Cancel
                                     </button>
                                 </div>
                             </form>
+
                         </div>
                     }
-                </div>
-                <div className="col-4 mx-5">
-                    <div className="profile-info d-flex justify-content-evenly w-75 py-3">
-                        <p>Your Clients</p>
-                        <p className="">{clients.length}</p>
+                    <div className="w-25">
+                        <div className="profile-info d-flex justify-content-evenly w-50 py-3">
+                            <p className="fw-bold">Klientide arv:</p>
+                            <p className="">{clients.length}</p>
+                        </div>
                     </div>
                 </div>
             </div>

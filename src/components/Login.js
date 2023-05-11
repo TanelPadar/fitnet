@@ -46,13 +46,6 @@ function Login(props) {
                     localStorage.setItem('userId', response.data.id)
                 }
             } catch (error) {
-                console.log('Login failed',)
-                console.log(error)
-                if (error.response.status === 401) {
-                    setPasswordError(error.response.data.error)
-                } else if (error.response.status === 404) {
-                    setEmailError(error.response.data.error)
-                }
             }
         }
     };

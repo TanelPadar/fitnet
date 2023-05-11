@@ -9,15 +9,15 @@ import Schedule from "./Schedule";
 const Sidebar = () => {
     const [activeItem, setActiveItem] = useState('profile');
 
-    function generateNavItem(itemName, activeItem, handleItemClick) {
+    function generateNavItem(itemName, activeItem, handleItemClick,icon) {
         const isActive = itemName === activeItem;
         return (
             <a
-                className={`profile-item ${isActive ? 'active' : ''}`}
+                className={`profile-item d-flex  ${isActive ? 'active' : ''}`}
                 href="#"
                 onClick={() => handleItemClick(itemName)}
             >
-                {itemName.charAt(0).toUpperCase() + itemName.slice(1)}
+                <i className={'icon d-flex align-items-center mx-2 my-5 ' + icon + (isActive ? ' active' : '')}></i>
             </a>
         );
     }
@@ -28,26 +28,23 @@ const Sidebar = () => {
 
     const handleItemClick = (item) => {
         setActiveItem(item);
+        if (item === 'log out') {
+            logOut()
+        }
     };
     return (
        <div className="container-fluid">
            <div className="row">
-           <div className="col-2 vh-100 sidebar min-vw-25">
-               <nav className="d-flex flex-column mt-2">
-                   {generateNavItem('profile', activeItem, handleItemClick)}
-                   {generateNavItem('clients', activeItem, handleItemClick)}
-                   {generateNavItem('schedule', activeItem, handleItemClick)}
-                   {generateNavItem('settings', activeItem, handleItemClick)}
-                   <a className="profile-item" onClick={logOut}>
-                       <i className="fas fa-power-off"></i> Log out
-                   </a>
-
-
-
-
+           <div className="col-1 vh-100 sidebar align-items-center min-vw-25">
+               <nav className="d-flex flex-column align-items-center h-100  mt-2 justify-content-center">
+                   {generateNavItem('profile', activeItem, handleItemClick,'fa fa-user fa-fw')}
+                   {generateNavItem('clients', activeItem, handleItemClick, 'fas fa-users')}
+                   {generateNavItem('schedule', activeItem, handleItemClick, 'far fa-calendar-alt')}
+                   {generateNavItem('settings', activeItem, handleItemClick,'fas fa-cog')}
+                   {generateNavItem('log out', activeItem, handleItemClick,'fas fa-power-off')}
                </nav>
            </div>
-           <div className="col-10">
+           <div className="col-11 justify-content-center align-items-center">
                {activeItem === 'profile' && <TrainerProfile viewClients={setActiveItem}/>}
                {activeItem === 'clients' && <Clients/>}
                {activeItem === 'schedule' && <Schedule/>}

@@ -34,7 +34,7 @@ function Signup(props) {
         } else if (!/\S+@\S+\.\S+/.test(email)) {
             setEmailError('Please insert a valid email address.');
             valid = false;
-        } else {
+        }  else {
             setEmailError('');
         }
 
@@ -71,8 +71,6 @@ function Signup(props) {
                     }
                 })
             } catch (error) {
-                console.log('Registration failed', error)
-                setEmailError(error.response.data.error)
             }
         }
 
@@ -109,8 +107,7 @@ function Signup(props) {
             <div className="login-bg vh-100 d-flex justify-content-center align-items-center">
                 <div className="login-form">
                     <div className="d-block">
-                        <div className="d-flex justify-content-start ms-4 mt-3"><img src={TrainingIcon}
-                                                                                     alt="trainingicon"/></div>
+                        <div className="d-flex justify-content-start ms-4 mt-3"><img src={TrainingIcon} alt="trainingicon"/></div>
                         <div className="signup-form-container">
                             <form onSubmit={handleSubmit}>
                                 <div className="form-group row justify-content-center mb-3">
@@ -170,7 +167,7 @@ function Signup(props) {
                                     {handleInputErrors(passwordError, emailError, rePasswordError)}
                                 </div>
 
-                                <div className="form-group row justify-content-center mx-2">
+                                <div className="form-group row justify-content-center  mx-3">
                                     <div className="d-flex w-75">
                                         <button type="submit" onClick={handleSubmit} className="sign-in w-100">Sign up
                                         </button>

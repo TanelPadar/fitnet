@@ -1,5 +1,10 @@
 .App {
   text-align: center;
+  background-image: url("Images/background2.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: #005073;
+  background-blend-mode: screen;
 }
 
 .App-logo {

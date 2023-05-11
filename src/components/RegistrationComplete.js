@@ -2,9 +2,6 @@ import TrainingIcon from '../Images/training-svgrepo-com1.svg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/main.css';
 
-
-
-
 function RegistrationComplete(props) {
 
     return (

@@ -1,8 +1,4 @@
-.calendar {
-    margin: 0 auto;
-    width: 800px;
-    height: 500px;
-}
+
 
 .react-calendar__month-view__days {
     height: 400px;
@@ -14,8 +10,9 @@
 
 .day-workout {
     background-color: #96E6FF;
-    padding: 20px 30px;
-    border-radius: 10px;
+    padding: 10px 30px;
+    border-radius: 5px;
     box-shadow: 2px 2px 5px gray;
     margin: 1% auto 0;
+    cursor: pointer;
 }
