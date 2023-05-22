@@ -22,31 +22,31 @@ function Signup(props) {
     const validateInput = () => {
         let valid = true;
         if (!name) {
-            setNameError('Name is required');
+            setNameError('Nimi on nõutud väli.');
             valid = false;
         } else {
             setNameError('');
         }
 
         if (!email) {
-            setEmailError('Email is required');
+            setEmailError('E-post on nõutud väli.');
             valid = false;
         } else if (!/\S+@\S+\.\S+/.test(email)) {
-            setEmailError('Please insert a valid email address.');
+            setEmailError('Palun sisesta korrektne E-posti aadress.');
             valid = false;
         }  else {
             setEmailError('');
         }
 
         if (password.length < 6) {
-            setPasswordError('Password is required.');
+            setPasswordError('Parool on kohustuslik.');
             valid = false;
         } else {
             setPasswordError('');
         }
 
         if (rePassword !== password) {
-            setRePasswordError('Passwords do not match.');
+            setRePasswordError('Salasõnad ei kattu.');
             valid = false;
         } else {
             setRePasswordError('');
@@ -115,7 +115,7 @@ function Signup(props) {
                                         <input type="name"
                                                className={`form-control ${nameError ? 'is-invalid' : ''}`}
                                                id="name"
-                                               placeholder="Name"
+                                               placeholder="Nimi"
                                                value={name}
                                                onChange={(e) => setName(e.target.value)}></input>
                                     </div>
@@ -125,7 +125,7 @@ function Signup(props) {
                                         <input type="email"
                                                className={`form-control ${emailError ? 'is-invalid' : ''}`}
                                                id="inputEmail3"
-                                               placeholder="Email"
+                                               placeholder="E-post"
                                                value={email}
                                                onChange={(e) => setEmail(e.target.value)}></input>
                                     </div>
@@ -135,7 +135,7 @@ function Signup(props) {
                                         <input type="password"
                                                className={`form-control ${passwordError ? 'is-invalid' : ''}`}
                                                id="inputPassword3"
-                                               placeholder="Password"
+                                               placeholder="Parool"
                                                value={password}
                                                onChange={(e) => setPassword(e.target.value)}></input>
                                     </div>
@@ -145,7 +145,7 @@ function Signup(props) {
                                         <input type="password"
                                                className={`form-control ${rePassword !== password ? 'is-invalid' : ''}`}
                                                id="inputPassword3"
-                                               placeholder="Re-type your Password"
+                                               placeholder="Sisesta uuesti parool"
                                                value={rePassword}
                                                onChange={(e) => {
                                                    setRePassword(e.target.value)
@@ -157,7 +157,7 @@ function Signup(props) {
                                         <input type="tel"
                                                className={`form-control`}
                                                id="phonenumber"
-                                               placeholder="Phone number"
+                                               placeholder="Telefoni number"
                                                value={phoneNumber}
                                                onChange={(e) => setPhoneNumber(e.target.value)}
                                         ></input>
@@ -169,7 +169,7 @@ function Signup(props) {
 
                                 <div className="form-group row justify-content-center  mx-3">
                                     <div className="d-flex w-75">
-                                        <button type="submit" onClick={handleSubmit} className="sign-in w-100">Sign up
+                                        <button type="submit" onClick={handleSubmit} className="sign-in w-100">Registreeri
                                         </button>
                                     </div>
                                 </div>
@@ -177,7 +177,7 @@ function Signup(props) {
                                 <div className="form-group row justify-content-center mt-2">
                                     <div className="d-block justify-content-center">
                                         <a href="" onClick={() => props.setSignupView(false)}><p
-                                            className="have-acccount-text fw-bold">Have an account?</p></a>
+                                            className="have-acccount-text fw-bold">Kasutaja olemas?</p></a>
                                     </div>
                                 </div>
                             </form>

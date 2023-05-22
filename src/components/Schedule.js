@@ -51,7 +51,7 @@ function Schedule() {
         if (view === 'month') {
             for (const workout of workouts) {
                 if (date.toLocaleDateString() === new Date(workout.date).toLocaleDateString()) {
-                    return <div>Workouts</div>
+                    return <div>Treening</div>
                 }
             }
         }
