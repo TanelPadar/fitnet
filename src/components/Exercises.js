@@ -1,11 +1,16 @@
 import axios from "axios";
 import {useEffect, useState} from "react";
-import login from "./Login";
+import AddExerciseForm from "./AddExerciseForm";
+import './Exercises.css'
+import ExerciseModal from "./ExerciseModal";
 
 function Exercises(props) {
     const api = process.env.REACT_APP_API_KEY
 
     const [exercises, setExercises] = useState([])
+    const [addExercise, setAddExercise] = useState(false)
+    const [modalIsOpen, setIsOpen] = useState(false);
+    const [activeExercise, setActiveExercise] = useState({})
 
     useEffect(() => {
         getWorkoutExercises()
@@ -21,43 +26,38 @@ function Exercises(props) {
         }
     }
 
+    function openExerciseModal(exercise) {
+        setActiveExercise(exercise)
+        setIsOpen(true)
+    }
+
     return (
         <div>
-            <h5 className="text-muted my-3">{ props.WorkoutDesc}</h5>
-            <table className="table mt-5 w-50 center">
-                <thead>
-                <p className="fw-bold text-muted">Lihasgrupp:</p>
-                <tr>
-                    <th scope="col">Rida</th>
-                    <th scope="col">Harjutus</th>
-                </tr>
-                </thead>
-                <tbody>
-                {exercises.map((exercise, index) => {
-                    let rowNumber = index + 1;
+            <h5 className="text-muted my-3">{props.WorkoutDesc}</h5>
+            {!addExercise ?
+            <button onClick={() => setAddExercise(true)}>Lisa uus harjutus</button> :
+                <AddExerciseForm setAddExercise={setAddExercise} exercises={exercises} workoutId={props.WorkoutId} refreshExercises={getWorkoutExercises}/>}
+            <div>
+                {exercises.map((exercise) => {
                     const exerciseSets = exercise.sets
                     return (
                         <>
-                            <tr key={exercise._id}>
-                                <th scope="row">{rowNumber}</th>
-                                <td>{exercise.exerciseName}</td>
-                                <td></td>
-                            </tr>
-                            {exerciseSets.map((set) => (
-                                <tr>
-                                    <td></td>
-                                    <td>{set.weight} kg</td>
-                                    <td>{set.reps}</td>
-                                </tr>
-                                ))}
+                            <div className={"exercise-container w-25"} onClick={()=> openExerciseModal(exercise)}>
+                                <h2>{exercise.exerciseName}</h2>
+                                <table className={"sets"}>
+                                    {exerciseSets.map((set) => (
+                                        <tr>
+                                            <td>{set.weight} kg</td>
+                                            <td>{set.reps}</td>
+                                        </tr>
+                                    ))}
+                                </table>
+                            </div>
                         </>
-                    );
+                    )
                 })}
-                </tbody>
-            </table>
-
-
-
+            </div>
+            <ExerciseModal setIsOpen={setIsOpen} modalIsOpen={modalIsOpen} exercise={activeExercise} refreshExercises={getWorkoutExercises}/>
         </div>
     )
 }

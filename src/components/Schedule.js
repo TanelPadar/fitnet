@@ -87,6 +87,7 @@ function Schedule() {
                 description: newWorkoutDescription
             })
             await getWorkouts()
+            await setNewWorkoutForm(false)
         }
     }
 
@@ -172,9 +173,9 @@ function Schedule() {
                             </tr>
                             </tbody>
                         </table>
-                        <div className="schedule-save d-flex justify-content-end align-items-center">
+                        <div onClick={addNewWorkout} className="schedule-save d-flex justify-content-end align-items-center">
                             <p className=" my-0">salvesta</p>
-                            <i onClick={addNewWorkout}  className="fa-fw fas fa-save"></i>
+                            <i className="fa-fw fas fa-save"></i>
                         </div>
 
                     </div>
