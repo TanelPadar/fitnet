@@ -2,13 +2,11 @@ import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css';
 import {useEffect, useState} from "react";
 import "./Calendar.css"
-import axios from "axios";
 import Exercises from "./Exercises";
+import {deleteWorkoutById, getWorkouts, postWorkout} from "./utils";
 
 function Schedule() {
-    const api = process.env.REACT_APP_API_KEY
     const userId = localStorage.getItem('userId')
-
     const [value, onChange] = useState(new Date());
     const [workouts, setWorkouts] = useState([]);
     const [dayView, setDayView] = useState(false);
@@ -25,23 +23,16 @@ function Schedule() {
     const selectedDayWorkouts = []
 
     useEffect(() => {
-        getWorkouts()
-        getTrainerClients()
+        fetchWorkouts().then()
     }, []);
 
-    const getTrainerClients = async () => {
-        try {
-            const response = await axios.get(api + `/trainer/clients/${userId}`)
-            setClients(response.data)
-        } catch (error) {
-            console.log('No clients found', error)
-        }
-    }
 
-    const getWorkouts = async () => {
+    const fetchWorkouts = async () => {
         try {
-            const results = await axios.get(api + `/schedule/${userId}`)
-            await setWorkouts(results.data)
+            getWorkouts(userId)
+                .then(response => {
+                    setWorkouts(response.data)
+                })
         } catch (e) {
             console.log(e)
         }
@@ -81,21 +72,17 @@ function Schedule() {
         if (newWorkoutTime === '') {
             setCalendarError(true)
         } else {
-            await axios.post(api + '/add-workout', {
-                userId: newWorkoutUser,
-                date: newWorkoutTime,
-                description: newWorkoutDescription
-            })
-            await getWorkouts()
+            await postWorkout(newWorkoutUser,newWorkoutTime,newWorkoutDescription)
+            await fetchWorkouts();
         }
     }
 
     async function deleteWorkout(workoutId) {
-        await axios.delete(api + `/delete-workout=${workoutId}`);
+        await deleteWorkoutById(workoutId);
         setWorkouts(prevWorkouts => prevWorkouts.filter(workout => workout._id !== workoutId));
     }
 
-    function toggleExerciseView(id,description) {
+    function toggleExerciseView(id, description) {
         setWorkoutDesc(description)
         setWorkoutId(id)
         setExerciseView(!exerciseView)
@@ -110,20 +97,22 @@ function Schedule() {
         return (
             <div>
 
-                    <h4>Treening</h4>
-                    <h6>{selectedDate.toLocaleDateString()}</h6>
+                <h4>Treening</h4>
+                <h6>{selectedDate.toLocaleDateString()}</h6>
                 {!newWorkoutForm ? (
                     <div onClick={closeDayView} className="text-button d-flex align-items-center mx-auto w-75 gap-1">
                         <i className="fas fa-arrow-left"></i>
                         <p className="m-0 fw-bold">Tagasi</p>
                     </div>
-                ) : '' }
+                ) : ''}
 
                 {!newWorkoutForm ? (
                         <div>
                             {selectedDayWorkouts.map(selectedDayWorkout => (
-                                <div  onClick={() =>toggleExerciseView(selectedDayWorkout._id,selectedDayWorkout.description)} key={selectedDayWorkout._id}
-                                     className={"d-flex flex-row justify-content-around day-workout w-75"}>
+                                <div
+                                    onClick={() => toggleExerciseView(selectedDayWorkout._id, selectedDayWorkout.description)}
+                                    key={selectedDayWorkout._id}
+                                    className={"d-flex flex-row justify-content-around day-workout w-75"}>
                                     <div
                                         className={"w-25 border-end border-dark"}>{new Date(selectedDayWorkout.date).toLocaleTimeString('en-GB', {
                                         timeZone: 'EET',
@@ -134,11 +123,13 @@ function Schedule() {
                                     <div className={"w-25 border-end border-dark"}>{selectedDayWorkout.description}</div>
                                     <div className="d-flex flex-row justify-content gap-2">
                                         <i className="fas fa-edit"></i>
-                                        <i onClick={() => deleteWorkout(selectedDayWorkout._id)} className="fas fa-trash"></i>
+                                        <i onClick={() => deleteWorkout(selectedDayWorkout._id)}
+                                           className="fas fa-trash"></i>
                                     </div>
                                 </div>
                             ))}
-                            <div onClick={toggleNewWorkoutForm} className="text-button d-flex align-items-center justify-content-center mt-3 gap-1">
+                            <div onClick={toggleNewWorkoutForm}
+                                 className="text-button d-flex align-items-center justify-content-center mt-3 gap-1">
                                 <i className="fas fa-plus"></i>
                                 <p className="m-0 fw-bold">Lisa Treening</p>
                             </div>
@@ -155,26 +146,29 @@ function Schedule() {
                             </thead>
                             <tbody>
                             <tr>
-                                <td> <input className={calendarError ? 'border border-danger' : ''}
-                                            value={newWorkoutTime || new Date(selectedDate.getTime() - (selectedDate.getTimezoneOffset() * 60000)).toISOString().slice(0, -8)}
-                                            name={"workoutTime"} type={"datetime-local"}
-                                            onChange={(e) => setNewWorkoutTime(e.target.value)} className="form-control" aria-label="Sizing example input"
-                                            aria-describedby="inputGroup-sizing-sm"/></td>
-                                <td> <select name="client" className="form-select" aria-label="Default select example" onChange={(e) => setNewWorkoutUser(e.target.value)} >
+                                <td><input className={calendarError ? 'border border-danger' : ''}
+                                           value={newWorkoutTime || new Date(selectedDate.getTime() - (selectedDate.getTimezoneOffset() * 60000)).toISOString().slice(0, -8)}
+                                           name={"workoutTime"} type={"datetime-local"}
+                                           onChange={(e) => setNewWorkoutTime(e.target.value)} className="form-control"
+                                           aria-label="Sizing example input"
+                                           aria-describedby="inputGroup-sizing-sm"/></td>
+                                <td><select name="client" className="form-select" aria-label="Default select example"
+                                            onChange={(e) => setNewWorkoutUser(e.target.value)}>
                                     <option value={userId}>Me</option>
                                     {clients.map(client => (
                                         <option key={client._id} value={client._id}>{client.name}</option>
                                     ))}
                                 </select></td>
-                                <td> <input type={"text"}
-                                            onChange={(e) => setNewWorkoutDescription(e.target.value)} className="form-control" aria-label="Sizing example input"
-                                            aria-describedby="inputGroup-sizing-sm"/></td>
+                                <td><input type={"text"}
+                                           onChange={(e) => setNewWorkoutDescription(e.target.value)}
+                                           className="form-control" aria-label="Sizing example input"
+                                           aria-describedby="inputGroup-sizing-sm"/></td>
                             </tr>
                             </tbody>
                         </table>
                         <div className="schedule-save d-flex justify-content-end align-items-center">
                             <p className=" my-0">salvesta</p>
-                            <i onClick={addNewWorkout}  className="fa-fw fas fa-save"></i>
+                            <i onClick={addNewWorkout} className="fa-fw fas fa-save"></i>
                         </div>
 
                     </div>
@@ -194,8 +188,12 @@ function Schedule() {
         <div>
             {!dayView ?
                 <div><h4 className="my-3">AJAKAVA</h4>
-                <div className="container w-75 mt-5"><Calendar className={"calendar mx-5 w-auto"} onChange={onChange} value={value} tileContent={hasWorkout}
-                          tileClassName={hasWorkoutStyle} onClickDay={(value) => viewDay(value)}/></div></div>
+                    <div className="container w-75 mt-5"><Calendar className={"calendar mx-5 w-auto"}
+                                                                   onChange={onChange} value={value}
+                                                                   tileContent={hasWorkout}
+                                                                   tileClassName={hasWorkoutStyle}
+                                                                   onClickDay={(value) => viewDay(value)}/></div>
+                </div>
                 :
                 <div>
                     {!exerciseView ? dayViewRender() : <Exercises WorkoutId={workoutId} WorkoutDesc={workoutDesc}/>}

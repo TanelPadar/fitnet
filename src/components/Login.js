@@ -2,9 +2,8 @@ import TrainingIcon from '../Images/training-icon.svg';
 import React, {useEffect, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/main.css';
-import axios from "axios";
 import Signup from "./Signup";
-
+import {LoginUser} from "./utils";
 
 function Login(props) {
     const [email, setEmail] = useState('');
@@ -13,7 +12,6 @@ function Login(props) {
     const [passwordError, setPasswordError] = useState('');
     const [signupView, setSignupView] = useState(false)
 
-    const api = process.env.REACT_APP_API_KEY
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -36,11 +34,7 @@ function Login(props) {
         // submit the form if there are no errors
         if (!emailError && !passwordError) {
             try {
-                console.log(email, password)
-                const response = await axios.post(api + '/login', {
-                    email: email,
-                    password: password
-                })
+                const response = await LoginUser(email,password);
                 if (response.status === 202) {
                     props.setLoggedIn(true)
                     localStorage.setItem('userId', response.data.id)
@@ -115,13 +109,14 @@ function Login(props) {
 
                                     <div className="form-group row justify-content-center">
                                         <div className="d-flex w-75">
-                                            <button type="submit" className="sign-in w-100">Logi sisse  </button>
+                                            <button type="submit" className="sign-in w-100">Logi sisse</button>
                                         </div>
                                     </div>
                                 </form>
                                 <div className="form-group row justify-content-center mt-4">
                                     <div className="d-flex w-75 gap-1">
-                                        <button type="submit" className="forgot-password w-50">Unustasid salasõna</button>
+                                        <button type="submit" className="forgot-password w-50">Unustasid salasõna
+                                        </button>
                                         <button onClick={() => setSignupView(true)} type="submit"
                                                 className="sign-up w-50">Liitu
                                         </button>

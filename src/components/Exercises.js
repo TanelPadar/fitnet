@@ -1,20 +1,18 @@
 import axios from "axios";
 import {useEffect, useState} from "react";
-import login from "./Login";
+import {getExercisesById} from "./utils";
+
 
 function Exercises(props) {
-    const api = process.env.REACT_APP_API_KEY
 
     const [exercises, setExercises] = useState([])
-
     useEffect(() => {
-        getWorkoutExercises()
+        fetchExercises().then(r => r)
     }, []);
 
-    const getWorkoutExercises = async () => {
-        const WorkoutId = props.WorkoutId
+    const fetchExercises = async () => {
         try {
-            const response = await axios.get(api + `/get-exercises/${WorkoutId}`)
+            const response = await getExercisesById(props.WorkoutId)
             await setExercises(response.data)
         } catch (e) {
             console.log(e)
@@ -23,7 +21,7 @@ function Exercises(props) {
 
     return (
         <div>
-            <h5 className="text-muted my-3">{ props.WorkoutDesc}</h5>
+            <h5 className="text-muted my-3">{props.WorkoutDesc}</h5>
             <table className="table mt-5 w-50 center">
                 <thead>
                 <p className="fw-bold text-muted">Lihasgrupp:</p>
@@ -49,15 +47,12 @@ function Exercises(props) {
                                     <td>{set.weight} kg</td>
                                     <td>{set.reps}</td>
                                 </tr>
-                                ))}
+                            ))}
                         </>
                     );
                 })}
                 </tbody>
             </table>
-
-
-
         </div>
     )
 }

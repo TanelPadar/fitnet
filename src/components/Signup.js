@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/main.css';
 import axios from "axios";
 import RegistrationComplete from "./RegistrationComplete";
+import {RegisterUser} from "./utils";
 
 
 function Signup(props) {
@@ -17,7 +18,6 @@ function Signup(props) {
     const [passwordError, setPasswordError] = useState('');
     const [rePasswordError, setRePasswordError] = useState('');
     const [registrationComplete, setRegistrationComplete] = useState(false)
-    const api = process.env.REACT_APP_API_KEY
 
     const validateInput = () => {
         let valid = true;
@@ -34,7 +34,7 @@ function Signup(props) {
         } else if (!/\S+@\S+\.\S+/.test(email)) {
             setEmailError('Palun sisesta korrektne E-posti aadress.');
             valid = false;
-        }  else {
+        } else {
             setEmailError('');
         }
 
@@ -60,12 +60,7 @@ function Signup(props) {
 
         if (validateInput() === true) {
             try {
-                await axios.post(api + '/register', {
-                    name: name,
-                    email: email,
-                    password: password,
-                    phone: phoneNumber
-                }).then(res => {
+                await RegisterUser(name,email,password,phoneNumber).then(res => {
                     if (res.status === 200) {
                         setRegistrationComplete(true)
                     }
@@ -104,87 +99,89 @@ function Signup(props) {
     return (
         <div>
             {!registrationComplete ?
-            <div className="login-bg vh-100 d-flex justify-content-center align-items-center">
-                <div className="login-form">
-                    <div className="d-block">
-                        <div className="d-flex justify-content-start ms-4 mt-3"><img src={TrainingIcon} alt="trainingicon"/></div>
-                        <div className="signup-form-container">
-                            <form onSubmit={handleSubmit}>
-                                <div className="form-group row justify-content-center mb-3">
-                                    <div className="d-flex w-75">
-                                        <input type="name"
-                                               className={`form-control ${nameError ? 'is-invalid' : ''}`}
-                                               id="name"
-                                               placeholder="Nimi"
-                                               value={name}
-                                               onChange={(e) => setName(e.target.value)}></input>
+                <div className="login-bg vh-100 d-flex justify-content-center align-items-center">
+                    <div className="login-form">
+                        <div className="d-block">
+                            <div className="d-flex justify-content-start ms-4 mt-3"><img src={TrainingIcon}
+                                                                                         alt="trainingicon"/></div>
+                            <div className="signup-form-container">
+                                <form onSubmit={handleSubmit}>
+                                    <div className="form-group row justify-content-center mb-3">
+                                        <div className="d-flex w-75">
+                                            <input type="name"
+                                                   className={`form-control ${nameError ? 'is-invalid' : ''}`}
+                                                   id="name"
+                                                   placeholder="Nimi"
+                                                   value={name}
+                                                   onChange={(e) => setName(e.target.value)}></input>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="form-group row justify-content-center mb-3">
-                                    <div className="d-flex w-75">
-                                        <input type="email"
-                                               className={`form-control ${emailError ? 'is-invalid' : ''}`}
-                                               id="inputEmail3"
-                                               placeholder="E-post"
-                                               value={email}
-                                               onChange={(e) => setEmail(e.target.value)}></input>
+                                    <div className="form-group row justify-content-center mb-3">
+                                        <div className="d-flex w-75">
+                                            <input type="email"
+                                                   className={`form-control ${emailError ? 'is-invalid' : ''}`}
+                                                   id="inputEmail3"
+                                                   placeholder="E-post"
+                                                   value={email}
+                                                   onChange={(e) => setEmail(e.target.value)}></input>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="form-group row justify-content-center mb-3">
-                                    <div className="d-flex w-75">
-                                        <input type="password"
-                                               className={`form-control ${passwordError ? 'is-invalid' : ''}`}
-                                               id="inputPassword3"
-                                               placeholder="Parool"
-                                               value={password}
-                                               onChange={(e) => setPassword(e.target.value)}></input>
+                                    <div className="form-group row justify-content-center mb-3">
+                                        <div className="d-flex w-75">
+                                            <input type="password"
+                                                   className={`form-control ${passwordError ? 'is-invalid' : ''}`}
+                                                   id="inputPassword3"
+                                                   placeholder="Parool"
+                                                   value={password}
+                                                   onChange={(e) => setPassword(e.target.value)}></input>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="form-group row justify-content-center mb-3">
-                                    <div className="d-flex w-75">
-                                        <input type="password"
-                                               className={`form-control ${rePassword !== password ? 'is-invalid' : ''}`}
-                                               id="inputPassword3"
-                                               placeholder="Sisesta uuesti parool"
-                                               value={rePassword}
-                                               onChange={(e) => {
-                                                   setRePassword(e.target.value)
-                                               }}></input>
+                                    <div className="form-group row justify-content-center mb-3">
+                                        <div className="d-flex w-75">
+                                            <input type="password"
+                                                   className={`form-control ${rePassword !== password ? 'is-invalid' : ''}`}
+                                                   id="inputPassword3"
+                                                   placeholder="Sisesta uuesti parool"
+                                                   value={rePassword}
+                                                   onChange={(e) => {
+                                                       setRePassword(e.target.value)
+                                                   }}></input>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="form-group row justify-content-center">
-                                    <div className="d-flex w-75">
-                                        <input type="tel"
-                                               className={`form-control`}
-                                               id="phonenumber"
-                                               placeholder="Telefoni number"
-                                               value={phoneNumber}
-                                               onChange={(e) => setPhoneNumber(e.target.value)}
-                                        ></input>
+                                    <div className="form-group row justify-content-center">
+                                        <div className="d-flex w-75">
+                                            <input type="tel"
+                                                   className={`form-control`}
+                                                   id="phonenumber"
+                                                   placeholder="Telefoni number"
+                                                   value={phoneNumber}
+                                                   onChange={(e) => setPhoneNumber(e.target.value)}
+                                            ></input>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="form-group row justify-content-center">
-                                    {handleInputErrors(passwordError, emailError, rePasswordError)}
-                                </div>
+                                    <div className="form-group row justify-content-center">
+                                        {handleInputErrors(passwordError, emailError, rePasswordError)}
+                                    </div>
 
-                                <div className="form-group row justify-content-center  mx-3">
-                                    <div className="d-flex w-75">
-                                        <button type="submit" onClick={handleSubmit} className="sign-in w-100">Registreeri
-                                        </button>
+                                    <div className="form-group row justify-content-center  mx-3">
+                                        <div className="d-flex w-75">
+                                            <button type="submit" onClick={handleSubmit}
+                                                    className="sign-in w-100">Registreeri
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div className="form-group row justify-content-center mt-2">
-                                    <div className="d-block justify-content-center">
-                                        <a href="" onClick={() => props.setSignupView(false)}><p
-                                            className="have-acccount-text fw-bold">Kasutaja olemas?</p></a>
+                                    <div className="form-group row justify-content-center mt-2">
+                                        <div className="d-block justify-content-center">
+                                            <a href="" onClick={() => props.setSignupView(false)}><p
+                                                className="have-acccount-text fw-bold">Kasutaja olemas?</p></a>
+                                        </div>
                                     </div>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div> : <RegistrationComplete setSignupView={props.setSignupView}/>}
+                </div> : <RegistrationComplete setSignupView={props.setSignupView}/>}
         </div>
     )
 }

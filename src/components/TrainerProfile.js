@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/main.css';
-import axios from "axios";
+import {getTrainerClients, getUser, UpdateUser} from "./utils";
 
 
 function TrainerProfile(props) {
@@ -15,27 +15,25 @@ function TrainerProfile(props) {
     const [gender, setGender] = useState('')
     const [city, setCity] = useState('')
     const [homeGym, setHomeGym] = useState('')
-
-    const api = process.env.REACT_APP_API_KEY
     const userId = localStorage.getItem('userId')
 
     useEffect(() => {
-        getUserInformation();
-        getTrainerClients()
+        fetchUserInformation();
+        fetchTrainerClients();
     }, []);
 
-    const getUserInformation = async () => {
+    const fetchUserInformation = async () => {
         try {
-            const response = await axios.get(api + `/trainers/${userId}`);
+            const response = await getUser(userId);
             setUser(response.data);
         } catch (error) {
             console.log('No user found', error);
         }
     };
 
-    const getTrainerClients = async () => {
+    const fetchTrainerClients = async () => {
         try {
-            const response = await axios.get(api + `/trainer/clients/${userId}`)
+            const response = await getTrainerClients(userId);
             setClients(response.data)
         } catch (error) {
             console.log('No clients found', error)
@@ -76,7 +74,7 @@ function TrainerProfile(props) {
         }
 
         try {
-            await  axios.put(api + `/trainers/${userId}`, updatedFields)
+            await UpdateUser(userId,updatedFields)
             setEditInfo(false)
         } catch (error) {
             console.log("Error", error)
