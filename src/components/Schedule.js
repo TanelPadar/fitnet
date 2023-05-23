@@ -146,10 +146,10 @@ function Schedule() {
                             </thead>
                             <tbody>
                             <tr>
-                                <td><input className={calendarError ? 'border border-danger' : ''}
+                                <td><input className={calendarError ? 'border border-danger form-control' : 'form-control'}
                                            value={newWorkoutTime || new Date(selectedDate.getTime() - (selectedDate.getTimezoneOffset() * 60000)).toISOString().slice(0, -8)}
                                            name={"workoutTime"} type={"datetime-local"}
-                                           onChange={(e) => setNewWorkoutTime(e.target.value)} className="form-control"
+                                           onChange={(e) => setNewWorkoutTime(e.target.value)}
                                            aria-label="Sizing example input"
                                            aria-describedby="inputGroup-sizing-sm"/></td>
                                 <td><select name="client" className="form-select" aria-label="Default select example"

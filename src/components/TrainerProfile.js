@@ -4,13 +4,12 @@ import '../css/main.css';
 import {getTrainerClients, getUser, UpdateUser} from "./utils";
 
 
+
 function TrainerProfile(props) {
     const [user, setUser] = useState(null)
     const [editInfo, setEditInfo] = useState(true)
     const [clients, setClients] = useState([])
-    const [name, setName] = useState('')
     const [birthday, setBirthday] = useState('')
-    const [email, setEmail] = useState('')
     const [phone, setPhone] = useState(0)
     const [gender, setGender] = useState('')
     const [city, setCity] = useState('')
@@ -26,6 +25,7 @@ function TrainerProfile(props) {
         try {
             const response = await getUser(userId);
             setUser(response.data);
+            console.log(response.data)
         } catch (error) {
             console.log('No user found', error);
         }
@@ -42,9 +42,7 @@ function TrainerProfile(props) {
 
     const handleEditInfo = () => {
         setEditInfo(!editInfo);
-        setName(user.name)
         setBirthday(user.birthday)
-        setEmail(user.email)
         setPhone(user.phone)
         setGender(user.gender)
         setCity(user.city)
@@ -52,30 +50,16 @@ function TrainerProfile(props) {
     }
 
     const handleEditInfoSubmit = async () => {
-        const updatedFields = {}
-
-        if (name !== user.name) {
-            updatedFields.name = name
+        const updatedFields = {
+            phone:phone,
+            gender:gender,
+            city:city,
+            home_gym: homeGym,
+            birthday:new Date(birthday).toISOString()
         }
-        if (phone !== user.phone) {
-            updatedFields.phone = phone
-        }
-        if (gender !== user.gender) {
-            updatedFields.gender = gender
-        }
-        if (city !== user.city) {
-            updatedFields.city = city
-        }
-        if (homeGym !== user.home_gym) {
-            updatedFields.home_gym = homeGym
-        }
-        if (birthday !== user.birthday) {
-            updatedFields.birthday = new Date(birthday).toISOString();
-        }
-
         try {
-            await UpdateUser(userId,updatedFields)
-            setEditInfo(false)
+            await UpdateUser(userId,updatedFields).then(r => console.log(r))
+            setEditInfo(!editInfo);
         } catch (error) {
             console.log("Error", error)
         }
@@ -129,10 +113,10 @@ function TrainerProfile(props) {
                                     </div>
                                     <div>
                                         <p className="d-flex text-muted">Gender</p>
-                                        <select className="form-select" aria-label="Default select example" name="gender" onChange={(e) => setGender(e.target.value)}>
-                                            <option value="Male">Mees</option>
-                                            <option value="Female">Naine</option>
-                                            <option value="Other">Muu</option>
+                                        <select defaultValue={gender} className="form-select" aria-label="Default select example" name="gender" onChange={(e) => setGender(e.target.value)}>
+                                            <option  value="Mees">Mees</option>
+                                            <option value="Naine">Naine</option>
+                                            <option value="Muu">Muu</option>
                                         </select>
                                     </div>
                                     <div>
@@ -147,9 +131,9 @@ function TrainerProfile(props) {
                                     </div>
                                 </div>
                                 <div className="d-flex gap-1 justify-content-between mt-5">
-                                    <button type="button" type="submit" className="profile-btn">Save information
+                                    <button type="submit" className="profile-btn">Save information
                                     </button>
-                                    <button type="button" onClick={handleEditInfo} className="profile-btn ">Cancel
+                                    <button type="button" onClick={()=>setEditInfo(!editInfo)} className="profile-btn ">Cancel
                                     </button>
                                 </div>
                             </form>

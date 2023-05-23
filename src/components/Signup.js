@@ -39,7 +39,7 @@ function Signup(props) {
         }
 
         if (password.length < 6) {
-            setPasswordError('Parool on kohustuslik.');
+            setPasswordError('Pa');
             valid = false;
         } else {
             setPasswordError('');
@@ -57,7 +57,6 @@ function Signup(props) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         if (validateInput() === true) {
             try {
                 await RegisterUser(name,email,password,phoneNumber).then(res => {
@@ -74,14 +73,6 @@ function Signup(props) {
     function handleInputErrors(passwordError, emailError, rePasswordError) {
         return (
             <div className="form-group row justify-content-center">
-                {(passwordError && emailError && rePasswordError && nameError) ?
-                    <div className="error d-block justify-content-center w-75 my-2">
-                        {[passwordError, emailError, rePasswordError, nameError].map((error, index) => (
-                            <div key={index} className="login-input-error" style={{height: error ? 'auto' : ''}}>
-                                {error}
-                            </div>
-                        ))}
-                    </div> :
                     <div className="error d-block justify-content-center w-75 my-2">
                         {[passwordError, emailError, rePasswordError, nameError].map((error, index) => (
                             <div key={index} className="login-input-error" style={{height: error ? 'auto' : ''}}>
@@ -89,8 +80,6 @@ function Signup(props) {
                             </div>
                         ))}
                     </div>
-
-                }
             </div>
         );
     }
