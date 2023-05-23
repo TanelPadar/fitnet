@@ -94,7 +94,7 @@ function Login(props) {
                                             <input type="email"
                                                    className={`form-control ${emailError ? 'is-invalid' : ''}`}
                                                    id="inputEmail3"
-                                                   placeholder="Email"
+                                                   placeholder="E-mail"
                                                    value={email}
                                                    onChange={(e) => setEmail(e.target.value)}></input>
                                         </div>
@@ -104,7 +104,7 @@ function Login(props) {
                                             <input type="password"
                                                    className={`form-control ${passwordError ? 'is-invalid' : ''}`}
                                                    id="inputPassword3"
-                                                   placeholder="Password"
+                                                   placeholder="Parool"
                                                    value={password}
                                                    onChange={(e) => setPassword(e.target.value)}></input>
                                         </div>
@@ -115,15 +115,15 @@ function Login(props) {
 
                                     <div className="form-group row justify-content-center">
                                         <div className="d-flex w-75">
-                                            <button type="submit" className="sign-in w-100">Sign in</button>
+                                            <button type="submit" className="sign-in w-100">Logi sisse  </button>
                                         </div>
                                     </div>
                                 </form>
                                 <div className="form-group row justify-content-center mt-4">
                                     <div className="d-flex w-75 gap-1">
-                                        <button type="submit" className="forgot-password w-50">Forgot password</button>
+                                        <button type="submit" className="forgot-password w-50">Unustasid salasõna</button>
                                         <button onClick={() => setSignupView(true)} type="submit"
-                                                className="sign-up w-50">Sign Up
+                                                className="sign-up w-50">Liitu
                                         </button>
                                     </div>
                                 </div>

@@ -26,10 +26,10 @@ function Exercises(props) {
             <h5 className="text-muted my-3">{ props.WorkoutDesc}</h5>
             <table className="table mt-5 w-50 center">
                 <thead>
-                <p className="fw-bold text-muted">Muscle Group:</p>
+                <p className="fw-bold text-muted">Lihasgrupp:</p>
                 <tr>
-                    <th scope="col">Row</th>
-                    <th scope="col">Exercise</th>
+                    <th scope="col">Rida</th>
+                    <th scope="col">Harjutus</th>
                 </tr>
                 </thead>
                 <tbody>

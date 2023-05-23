@@ -102,16 +102,16 @@ function TrainerProfile(props) {
                 <div className="container d-flex justify-content-evenly">
                     {editInfo ?
                         <div className="flex-column">
-                            {user && parseRow('Name', user.name, <div className="profile-icon"><i className="fas fa-user-circle fa-fw"></i></div>)}
-                            {user && parseRow('E-mail', user.email, <div className="profile-icon"><i className="fas fa-envelope fa-fw"></i></div>)}
-                            {user && parseRow('Phone', user.phone, <div className="profile-icon"><i className="fas fa-phone-alt fa-fw"></i></div>)}
-                            {user && parseRow('Birthday', new Date(user.birthday).toLocaleDateString("en-US", {day: "numeric", month: "long"}),
+                            {user && parseRow('Nimi', user.name, <div className="profile-icon"><i className="fas fa-user-circle fa-fw"></i></div>)}
+                            {user && parseRow('E-Post', user.email, <div className="profile-icon"><i className="fas fa-envelope fa-fw"></i></div>)}
+                            {user && parseRow('Telefon', user.phone, <div className="profile-icon"><i className="fas fa-phone-alt fa-fw"></i></div>)}
+                            {user && parseRow('Sünnipäev', new Date(user.birthday).toLocaleDateString("en-US", {day: "numeric", month: "long"}),
                                 <div className="profile-icon"><i className="fas fa-birthday-cake fa-fw"></i></div>)}
-                            {user && parseRow('Gender', user.gender, <div className="profile-icon"><i className="fas fa-venus-mars fa-fw"></i></div>)}
-                            {user && parseRow('City', user.city, <div className="profile-icon"><i className="fas fa-city fa-fw" ></i></div>)}
-                            {user && parseRow('Home Gym', user.home_gym, <div className="profile-icon"><i className="fas fa-dumbbell fa-fw"></i></div>)}
+                            {user && parseRow('Sugu', user.gender, <div className="profile-icon"><i className="fas fa-venus-mars fa-fw"></i></div>)}
+                            {user && parseRow('Linn', user.city, <div className="profile-icon"><i className="fas fa-city fa-fw" ></i></div>)}
+                            {user && parseRow('Jõusaal', user.home_gym, <div className="profile-icon"><i className="fas fa-dumbbell fa-fw"></i></div>)}
                             <div className="d-flex mt-5">
-                                <button type="button" onClick={handleEditInfo} className="profile-btn">Edit profile
+                                <button type="button" onClick={handleEditInfo} className="profile-btn">Muuda profiili
                                 </button>
                             </div>
                         </div>
@@ -132,9 +132,9 @@ function TrainerProfile(props) {
                                     <div>
                                         <p className="d-flex text-muted">Gender</p>
                                         <select className="form-select" aria-label="Default select example" name="gender" onChange={(e) => setGender(e.target.value)}>
-                                            <option value="Male">Male</option>
-                                            <option value="Female">Female</option>
-                                            <option value="Other">Other</option>
+                                            <option value="Male">Mees</option>
+                                            <option value="Female">Naine</option>
+                                            <option value="Other">Muu</option>
                                         </select>
                                     </div>
                                     <div>
