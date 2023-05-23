@@ -3,7 +3,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/main.css';
 
 function RegistrationComplete(props) {
-
     return (
         <div className="login-bg vh-100 d-flex justify-content-center align-items-center">
             <div className="login-form align-items-center">
