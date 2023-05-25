@@ -36,7 +36,6 @@ function Login(props) {
         // submit the form if there are no errors
         if (!emailError && !passwordError) {
             try {
-                console.log(email, password)
                 const response = await axios.post(api + '/login', {
                     email: email,
                     password: password
@@ -46,6 +45,12 @@ function Login(props) {
                     localStorage.setItem('userId', response.data.id)
                 }
             } catch (error) {
+                console.log('Login failed',)
+                if (error.response.status === 401) {
+                    setPasswordError(error.response.data.error)
+                } else if (error.response.status === 404) {
+                    setEmailError(error.response.data.error)
+                }
             }
         }
     };
