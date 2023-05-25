@@ -1,8 +1,8 @@
 import TrainingIcon from '../Images/training-icon.svg';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/main.css';
-import axios from "axios";
+import {LoginUser} from "./utils";
 import Signup from "./Signup";
 
 
@@ -13,7 +13,6 @@ function Login(props) {
     const [passwordError, setPasswordError] = useState('');
     const [signupView, setSignupView] = useState(false)
 
-    const api = process.env.REACT_APP_API_KEY
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -36,11 +35,7 @@ function Login(props) {
         // submit the form if there are no errors
         if (!emailError && !passwordError) {
             try {
-                console.log(email, password)
-                const response = await axios.post(api + '/login', {
-                    email: email,
-                    password: password
-                })
+                const response = await LoginUser(email,password);
                 if (response.status === 202) {
                     props.setLoggedIn(true)
                     localStorage.setItem('userId', response.data.id)

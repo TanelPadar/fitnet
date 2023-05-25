@@ -1,25 +1,22 @@
-import axios from "axios";
 import {useEffect, useState} from "react";
 import AddExerciseForm from "./AddExerciseForm";
 import './Exercises.css'
 import ExerciseModal from "./ExerciseModal";
+import {getExercisesById} from "./utils";
 
 function Exercises(props) {
-    const api = process.env.REACT_APP_API_KEY
-
     const [exercises, setExercises] = useState([])
     const [addExercise, setAddExercise] = useState(false)
     const [modalIsOpen, setIsOpen] = useState(false);
     const [activeExercise, setActiveExercise] = useState({})
 
     useEffect(() => {
-        getWorkoutExercises()
+        fetchExercises()
     }, []);
 
-    const getWorkoutExercises = async () => {
-        const WorkoutId = props.WorkoutId
+    const fetchExercises = async () => {
         try {
-            const response = await axios.get(api + `/get-exercises/${WorkoutId}`)
+            const response = await getExercisesById(props.WorkoutId)
             await setExercises(response.data)
         } catch (e) {
             console.log(e)
@@ -43,8 +40,7 @@ function Exercises(props) {
                     <i className="fas fa-plus"></i>
                     <p className="m-0 fw-bold">Lisa harjutus</p>
                 </div> :
-                <AddExerciseForm setAddExercise={setAddExercise} exercises={exercises} workoutId={props.WorkoutId} refreshExercises={getWorkoutExercises}/>}
-            <div>
+                <AddExerciseForm setAddExercise={setAddExercise} exercises={exercises} workoutId={props.WorkoutId} refreshExercises={fetchExercises}/>}
                 {exercises.map((exercise) => {
                     const exerciseSets = exercise.sets
                     return (
@@ -63,8 +59,7 @@ function Exercises(props) {
                         </>
                     )
                 })}
-            </div>
-            <ExerciseModal setIsOpen={setIsOpen} modalIsOpen={modalIsOpen} exercise={activeExercise} refreshExercises={getWorkoutExercises}/>
+            <ExerciseModal setIsOpen={setIsOpen} modalIsOpen={modalIsOpen} exercise={activeExercise} refreshExercises={fetchExercises}/>
         </div>
     )
 }

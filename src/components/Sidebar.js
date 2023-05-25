@@ -33,24 +33,24 @@ const Sidebar = () => {
         }
     };
     return (
-       <div className="container-fluid">
-           <div className="row">
-           <div className="col-1 vh-100 sidebar align-items-center min-vw-25">
-               <nav className="d-flex flex-column align-items-center h-100  mt-2 justify-content-center">
-                   {generateNavItem('profile', activeItem, handleItemClick,'fa fa-user fa-fw')}
-                   {generateNavItem('clients', activeItem, handleItemClick, 'fas fa-users')}
-                   {generateNavItem('schedule', activeItem, handleItemClick, 'far fa-calendar-alt')}
-                   {generateNavItem('settings', activeItem, handleItemClick,'fas fa-cog')}
-                   {generateNavItem('log out', activeItem, handleItemClick,'fas fa-power-off')}
-               </nav>
-           </div>
-           <div className="col-11 justify-content-center align-items-center">
-               {activeItem === 'profile' && <TrainerProfile viewClients={setActiveItem}/>}
-               {activeItem === 'clients' && <Clients/>}
-               {activeItem === 'schedule' && <Schedule/>}
-           </div>
-           </div>
-       </div>
+        <div className="container-fluid vh-100">
+            <div className="row vh-100">
+                <div className="col-1 sidebar align-items-center min-vw-25">
+                    <nav className="d-flex flex-column align-items-center h-100  mt-2 justify-content-center">
+                        {generateNavItem('profile', activeItem, handleItemClick, 'fa fa-user fa-fw')}
+                        {generateNavItem('clients', activeItem, handleItemClick, 'fas fa-users')}
+                        {generateNavItem('schedule', activeItem, handleItemClick, 'far fa-calendar-alt')}
+                        {generateNavItem('settings', activeItem, handleItemClick, 'fas fa-cog')}
+                        {generateNavItem('log out', activeItem, handleItemClick, 'fas fa-power-off')}
+                    </nav>
+                </div>
+                <div className="main-content col-11 justify-content-center align-items-center">
+                    {activeItem === 'profile' && <TrainerProfile viewClients={setActiveItem}/>}
+                    {activeItem === 'clients' && <Clients/>}
+                    {activeItem === 'schedule' && <Schedule/>}
+                </div>
+            </div>
+        </div>
     );
 };
 

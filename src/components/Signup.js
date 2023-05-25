@@ -1,9 +1,9 @@
 import TrainingIcon from '../Images/training-svgrepo-com1.svg';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/main.css';
-import axios from "axios";
 import RegistrationComplete from "./RegistrationComplete";
+import {RegisterUser} from "./utils";
 
 
 function Signup(props) {
@@ -17,7 +17,6 @@ function Signup(props) {
     const [passwordError, setPasswordError] = useState('');
     const [rePasswordError, setRePasswordError] = useState('');
     const [registrationComplete, setRegistrationComplete] = useState(false)
-    const api = process.env.REACT_APP_API_KEY
 
     const validateInput = () => {
         let valid = true;
@@ -60,12 +59,7 @@ function Signup(props) {
 
         if (validateInput() === true) {
             try {
-                await axios.post(api + '/register', {
-                    name: name,
-                    email: email,
-                    password: password,
-                    phone: phoneNumber
-                }).then(res => {
+                await RegisterUser(name,email,password,phoneNumber).then(res => {
                     if (res.status === 200) {
                         setRegistrationComplete(true)
                     }
