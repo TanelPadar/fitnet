@@ -162,7 +162,7 @@ function Schedule() {
                                             onChange={(e) => setNewWorkoutTime(e.target.value)} className="form-control" aria-label="Sizing example input"
                                             aria-describedby="inputGroup-sizing-sm"/></td>
                                 <td> <select name="client" className="form-select" aria-label="Default select example" onChange={(e) => setNewWorkoutUser(e.target.value)} >
-                                    <option value={userId}>Me</option>
+                                    <option value={userId}>Mina</option>
                                     {clients.map(client => (
                                         <option key={client._id} value={client._id}>{client.name}</option>
                                     ))}
@@ -199,7 +199,7 @@ function Schedule() {
                           tileClassName={hasWorkoutStyle} onClickDay={(value) => viewDay(value)} locale="et-EE"/></div></div>
                 :
                 <div>
-                    {!exerciseView ? dayViewRender() : <Exercises WorkoutId={workoutId} WorkoutDesc={workoutDesc}/>}
+                    {!exerciseView ? dayViewRender() : <Exercises WorkoutId={workoutId} WorkoutDesc={workoutDesc} setExerciseView={setExerciseView}/>}
                 </div>
             }
         </div>

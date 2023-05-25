@@ -25,11 +25,11 @@ const AddExerciseForm = (props) => {
 
     return (
         <div>
-            <button onClick={() => props.setAddExercise(false)}>Close</button>
             <div>
-                <input type={"text"} placeholder={"Harjutuse nimi..."} onChange={(e) => setExerciseName(e.target.value)} value={exerciseName}/>
-                <button onClick={()=>addExercise()}>Lisa</button>
+                <input className={"add-exercise-input"} type={"text"} placeholder={"Harjutuse nimi..."} onChange={(e) => setExerciseName(e.target.value)} value={exerciseName} />
+                <i onClick={()=>addExercise()} className="fas fa-plus"></i>
             </div>
+            <button className={"profile-btn"} onClick={() => props.setAddExercise(false)}>Sulge</button>
         </div>
     );
 };

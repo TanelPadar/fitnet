@@ -149,9 +149,9 @@ function TrainerProfile(props) {
                                     </div>
                                 </div>
                                 <div className="d-flex gap-1 justify-content-between mt-5">
-                                    <button type="button" type="submit" className="profile-btn">Save information
+                                    <button type="button" type="submit" className="profile-btn">Salvesta
                                     </button>
-                                    <button type="button" onClick={handleEditInfo} className="profile-btn ">Cancel
+                                    <button type="button" onClick={handleEditInfo} className="profile-btn ">Sulge
                                     </button>
                                 </div>
                             </form>

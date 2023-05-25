@@ -1,5 +1,5 @@
 import Modal from 'react-modal'
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 
 
@@ -67,17 +67,17 @@ function ExerciseModal(props) {
                 style={customStyles}
                 contentLabel="Example Modal"
             >
-                <button className={"modal-close"} onClick={closeModal}>Sulge</button>
+                <button className={"modal-close"} onClick={closeModal}>X</button>
                 <h2>{selectedExercise.exerciseName}</h2>
                 <input className={"exercise-input"} type={"number"} placeholder={"Raskused"} onChange={(e)=>setWeight(e.target.value)}/>
                 <input className={"exercise-input"} type={"number"} placeholder={"Kordused"}  onChange={(e)=>setReps(e.target.value)}/>
-                <button onClick={()=> addExerciseSets()}>Lisa</button>
+                <i onClick={()=> addExerciseSets()} className="fas fa-plus"></i>
                 <table className={"sets exercise-modal-sets"}>
                     {exerciseSets.length > 0 && exerciseSets.map((set, key) => (
                         <tr key={key}>
                             <td>{set.weight} kg</td>
                             <td>{set.reps}</td>
-                            <td><button onClick={()=> deleteExerciseSet(key)}>X</button></td>
+                            <td><i onClick={()=> deleteExerciseSet(key)} className="icon fas fa-trash-alt"></i></td>
                         </tr>
                     ))}
                 </table>

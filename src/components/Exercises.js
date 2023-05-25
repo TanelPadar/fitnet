@@ -34,8 +34,15 @@ function Exercises(props) {
     return (
         <div>
             <h5 className="text-muted my-3">{props.WorkoutDesc}</h5>
+            <div onClick={()=>props.setExerciseView(false)} className="text-button d-flex align-items-center mx-auto w-75 gap-1">
+                <i className="fas fa-arrow-left"></i>
+                <p className="m-0 fw-bold">Tagasi</p>
+            </div>
             {!addExercise ?
-            <button onClick={() => setAddExercise(true)}>Lisa uus harjutus</button> :
+                <div onClick={() => setAddExercise(true)} className="text-button d-flex align-items-center justify-content-center mt-3 gap-1">
+                    <i className="fas fa-plus"></i>
+                    <p className="m-0 fw-bold">Lisa harjutus</p>
+                </div> :
                 <AddExerciseForm setAddExercise={setAddExercise} exercises={exercises} workoutId={props.WorkoutId} refreshExercises={getWorkoutExercises}/>}
             <div>
                 {exercises.map((exercise) => {
