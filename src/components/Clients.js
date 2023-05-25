@@ -2,40 +2,40 @@ import React, {useEffect, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/main.css';
 import '@fortawesome/fontawesome-free/css/all.css';
-import axios from "axios";
 import {getTrainerClients, removeClient} from "./utils";
 
 function Clients() {
-    const [clients, setClients] = useState([])
-    const userId = localStorage.getItem('userId')
+    const [clients, setClients] = useState([]);
+    const userId = localStorage.getItem('userId');
+
     const fetchTrainerClients = async () => {
         try {
             const response = await getTrainerClients(userId);
-            setClients(response.data)
+            setClients(response.data);
         } catch (error) {
-            console.log('No clients found', error)
+            console.log('No clients found', error);
         }
-    }
+    };
 
     const deleteClientFromTrainer = async (clientId) => {
         try {
-            await removeClient(userId,clientId)
-            fetchTrainerClients()
+            await removeClient(userId, clientId);
+            fetchTrainerClients();
         } catch (error) {
-            console.log('Error removing client', error)
+            console.log('Error removing client', error);
         }
-    }
+    };
 
     useEffect(() => {
-        fetchTrainerClients()
-    }, [])
+        fetchTrainerClients();
+    }, []);
 
 
     return (
         <div className="clients">
-            <h4 class="my-3">KLIENDID</h4>
+            <h4 className="my-3">KLIENDID</h4>
             <div className="container w-75">
-                <table className="table table-hover table-striped table-responsive mt-5 ">
+                <table className="table table-hover table-striped table-responsive mt-5">
                     <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -46,12 +46,15 @@ function Clients() {
                     </thead>
                     <tbody>
                     {clients.map((client, index) => (
-                        <tr key={index}>
+                        <tr key={client._id}>
                             <th scope="row">{index + 1}</th>
                             <td>{client.name}</td>
                             <td>{client.phone}</td>
-                            <td><i onClick={() => deleteClientFromTrainer(client._id)}
-                                   className="icon fas fa-trash-alt"></i>
+                            <td>
+                                <i
+                                    onClick={() => deleteClientFromTrainer(client._id)}
+                                    className="icon fas fa-trash-alt"
+                                ></i>
                             </td>
                         </tr>
                     ))}
@@ -59,7 +62,7 @@ function Clients() {
                 </table>
             </div>
         </div>
-    )
+    );
 }
 
 export default Clients;

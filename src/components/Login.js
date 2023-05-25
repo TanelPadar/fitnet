@@ -1,5 +1,5 @@
 import TrainingIcon from '../Images/training-icon.svg';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/main.css';
 import Signup from "./Signup";
@@ -17,16 +17,16 @@ function Login(props) {
         e.preventDefault();
         // validate email
         if (!email) {
-            setEmailError('Email is required');
+            setEmailError('');
         } else if (!/\S+@\S+\.\S+/.test(email)) {
-            setEmailError('Invalid email address');
+            setEmailError('Sisesta korrektne e-post');
         } else {
             setEmailError('');
         }
 
         // validate password
         if (password.length < 6) {
-            setPasswordError('Password must be at least 6 characters');
+            setPasswordError('')
         } else {
             setPasswordError('');
         }

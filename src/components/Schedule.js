@@ -187,8 +187,12 @@ function Schedule() {
         <div>
             {!dayView ?
                 <div><h4 className="my-3">AJAKAVA</h4>
-                <div className="container w-75 mt-5"><Calendar className={"calendar mx-5 w-auto"} onChange={onChange} value={value} tileContent={hasWorkout}
-                          tileClassName={hasWorkoutStyle} onClickDay={(value) => viewDay(value)}/></div></div>
+                    <div className="container w-75 mt-5"><Calendar className={"calendar mx-5 w-auto"}
+                                                                   onChange={onChange} value={value}
+                                                                   tileContent={hasWorkout}
+                                                                   tileClassName={hasWorkoutStyle}
+                                                                   onClickDay={(value) => viewDay(value)}/></div>
+                </div>
                 :
                 <div>
                     {!exerciseView ? dayViewRender() : <Exercises WorkoutId={workoutId} WorkoutDesc={workoutDesc}/>}
