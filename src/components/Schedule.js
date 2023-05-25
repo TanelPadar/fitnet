@@ -6,7 +6,9 @@ import Exercises from "./Exercises";
 import {deleteWorkoutById, getWorkouts, postWorkout} from "./utils";
 
 function Schedule() {
+    const api = process.env.REACT_APP_API_KEY
     const userId = localStorage.getItem('userId')
+
     const [value, onChange] = useState(new Date());
     const [workouts, setWorkouts] = useState([]);
     const [dayView, setDayView] = useState(false);
@@ -109,10 +111,8 @@ function Schedule() {
                 {!newWorkoutForm ? (
                         <div>
                             {selectedDayWorkouts.map(selectedDayWorkout => (
-                                <div
-                                    onClick={() => toggleExerciseView(selectedDayWorkout._id, selectedDayWorkout.description)}
-                                    key={selectedDayWorkout._id}
-                                    className={"d-flex flex-row justify-content-around day-workout w-75"}>
+                                <div key={selectedDayWorkout._id}
+                                     className={"d-flex flex-row justify-content-around day-workout w-75"}>
                                     <div
                                         className={"w-25 border-end border-dark"}>{new Date(selectedDayWorkout.date).toLocaleTimeString('en-GB', {
                                         timeZone: 'EET',
@@ -122,20 +122,22 @@ function Schedule() {
                                     <div className={"w-25 border-end border-dark"}>{selectedDayWorkout.userName}</div>
                                     <div className={"w-25 border-end border-dark"}>{selectedDayWorkout.description}</div>
                                     <div className="d-flex flex-row justify-content gap-2">
-                                        <i className="fas fa-edit"></i>
-                                        <i onClick={() => deleteWorkout(selectedDayWorkout._id)}
-                                           className="fas fa-trash"></i>
+                                        <i onClick={() =>toggleExerciseView(selectedDayWorkout._id,selectedDayWorkout.description)} className="fas fa-edit"></i>
+                                        <i onClick={() => deleteWorkout(selectedDayWorkout._id)} className="fas fa-trash"></i>
                                     </div>
                                 </div>
                             ))}
-                            <div onClick={toggleNewWorkoutForm}
-                                 className="text-button d-flex align-items-center justify-content-center mt-3 gap-1">
-                                <i className="fas fa-plus"></i>
-                                <p className="m-0 fw-bold">Lisa Treening</p>
+                            <div className="text-button d-flex align-items-center justify-content-center mt-3 gap-1">
+                                <i onClick={toggleNewWorkoutForm} className="fas fa-plus"></i>
+                                <p onClick={toggleNewWorkoutForm} className="m-0 fw-bold">Lisa Treening</p>
                             </div>
                         </div>
                     ) :
                     <div>
+                        <div onClick={() => setNewWorkoutForm(false)} className="text-button d-flex align-items-center mx-auto w-75 gap-1">
+                            <i className="fas fa-arrow-left"></i>
+                            <p className="m-0 fw-bold">Tagasi</p>
+                        </div>
                         <table className="table mt-5">
                             <thead>
                             <tr>
@@ -146,29 +148,26 @@ function Schedule() {
                             </thead>
                             <tbody>
                             <tr>
-                                <td><input className={calendarError ? 'border border-danger' : ''}
-                                           value={newWorkoutTime || new Date(selectedDate.getTime() - (selectedDate.getTimezoneOffset() * 60000)).toISOString().slice(0, -8)}
-                                           name={"workoutTime"} type={"datetime-local"}
-                                           onChange={(e) => setNewWorkoutTime(e.target.value)} className="form-control"
-                                           aria-label="Sizing example input"
-                                           aria-describedby="inputGroup-sizing-sm"/></td>
-                                <td><select name="client" className="form-select" aria-label="Default select example"
-                                            onChange={(e) => setNewWorkoutUser(e.target.value)}>
-                                    <option value={userId}>Me</option>
+                                <td className={"w-25"}> <input className={calendarError ? 'border border-danger' : ''}
+                                            value={newWorkoutTime || new Date(selectedDate.getTime() - (selectedDate.getTimezoneOffset() * 60000)).toISOString().slice(0, -8)}
+                                            name={"workoutTime"} type={"datetime-local"}
+                                            onChange={(e) => setNewWorkoutTime(e.target.value)} className="form-control" aria-label="Sizing example input"
+                                            aria-describedby="inputGroup-sizing-sm"/></td>
+                                <td className={"w-25"}> <select name="client" className="form-select" aria-label="Default select example" onChange={(e) => setNewWorkoutUser(e.target.value)} >
+                                    <option value={userId}>Mina</option>
                                     {clients.map(client => (
                                         <option key={client._id} value={client._id}>{client.name}</option>
                                     ))}
                                 </select></td>
-                                <td><input type={"text"}
-                                           onChange={(e) => setNewWorkoutDescription(e.target.value)}
-                                           className="form-control" aria-label="Sizing example input"
-                                           aria-describedby="inputGroup-sizing-sm"/></td>
+                                <td> <input type={"text"} placeholder={"Lisa treeningu kirjeldus"}
+                                            onChange={(e) => setNewWorkoutDescription(e.target.value)} className="form-control w-100" aria-label="Sizing example input"
+                                            aria-describedby="inputGroup-sizing-sm"/></td>
                             </tr>
                             </tbody>
                         </table>
-                        <div className="schedule-save d-flex justify-content-end align-items-center">
+                        <div onClick={addNewWorkout} className="schedule-save d-flex justify-content-end align-items-center">
                             <p className=" my-0">salvesta</p>
-                            <i onClick={addNewWorkout} className="fa-fw fas fa-save"></i>
+                            <i className="fa-fw fas fa-save"></i>
                         </div>
 
                     </div>
@@ -188,12 +187,8 @@ function Schedule() {
         <div>
             {!dayView ?
                 <div><h4 className="my-3">AJAKAVA</h4>
-                    <div className="container w-75 mt-5"><Calendar className={"calendar mx-5 w-auto"}
-                                                                   onChange={onChange} value={value}
-                                                                   tileContent={hasWorkout}
-                                                                   tileClassName={hasWorkoutStyle}
-                                                                   onClickDay={(value) => viewDay(value)}/></div>
-                </div>
+                <div className="container w-75 mt-5"><Calendar className={"calendar mx-5 w-auto"} onChange={onChange} value={value} tileContent={hasWorkout}
+                          tileClassName={hasWorkoutStyle} onClickDay={(value) => viewDay(value)}/></div></div>
                 :
                 <div>
                     {!exerciseView ? dayViewRender() : <Exercises WorkoutId={workoutId} WorkoutDesc={workoutDesc}/>}

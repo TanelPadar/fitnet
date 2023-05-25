@@ -40,6 +40,12 @@ function Login(props) {
                     localStorage.setItem('userId', response.data.id)
                 }
             } catch (error) {
+                console.log('Login failed',)
+                if (error.response.status === 401) {
+                    setPasswordError(error.response.data.error)
+                } else if (error.response.status === 404) {
+                    setEmailError(error.response.data.error)
+                }
             }
         }
     };
@@ -115,8 +121,7 @@ function Login(props) {
                                 </form>
                                 <div className="form-group row justify-content-center mt-4">
                                     <div className="d-flex w-75 gap-1">
-                                        <button type="submit" className="forgot-password w-50">Unustasid salasõna
-                                        </button>
+                                        <button type="submit" className="forgot-password w-50">Unustasid salasõna</button>
                                         <button onClick={() => setSignupView(true)} type="submit"
                                                 className="sign-up w-50">Liitu
                                         </button>
