@@ -1,18 +1,12 @@
-import axios from "axios";
 import {useState} from "react";
+import {postExercise} from "./utils";
 
 
 const AddExerciseForm = (props) => {
     const [exerciseName, setExerciseName] = useState('')
-
-
-    const api = process.env.REACT_APP_API_KEY
     async function addExercise() {
-        const workoutId = props.workoutId
         try {
-            await axios.post(api + `/add-exercise/${workoutId}`, {
-                exerciseName: exerciseName
-            }).then(res => {
+            await postExercise(props.workoutId,exerciseName).then(res => {
                 if (res.status === 200) {
                     props.setAddExercise(false)
                     props.refreshExercises()

@@ -69,8 +69,8 @@ function ExerciseModal(props) {
             >
                 <button className={"modal-close"} onClick={closeModal}>X</button>
                 <h2>{selectedExercise.exerciseName}</h2>
-                <input className={"exercise-input"} type={"number"} placeholder={"Raskused"} onChange={(e)=>setWeight(e.target.value)}/>
-                <input className={"exercise-input"} type={"number"} placeholder={"Kordused"}  onChange={(e)=>setReps(e.target.value)}/>
+                <div className="d-flex justify-content-center"><input className={"exercise-input w-50 text-center"} type={"number"} placeholder={"Raskus"} onChange={(e)=>setWeight(e.target.value)}/>
+                <input className={"exercise-input w-50 text-center p-0"} type={"number"} placeholder={"Kordused"}  onChange={(e)=>setReps(e.target.value)}/></div>
                 <i onClick={()=> addExerciseSets()} className="fas fa-plus"></i>
                 <table className={"sets exercise-modal-sets"}>
                     {exerciseSets.length > 0 && exerciseSets.map((set, key) => (

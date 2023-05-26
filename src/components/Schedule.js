@@ -2,13 +2,11 @@ import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css';
 import {useEffect, useState} from "react";
 import "./Calendar.css"
-import axios from "axios";
 import Exercises from "./Exercises";
+import {deleteWorkoutById, getWorkouts, postWorkout} from "./utils";
 
 function Schedule() {
-    const api = process.env.REACT_APP_API_KEY
     const userId = localStorage.getItem('userId')
-
     const [value, onChange] = useState(new Date());
     const [workouts, setWorkouts] = useState([]);
     const [dayView, setDayView] = useState(false);
@@ -25,23 +23,16 @@ function Schedule() {
     const selectedDayWorkouts = []
 
     useEffect(() => {
-        getWorkouts()
-        getTrainerClients()
+        fetchWorkouts().then()
     }, []);
 
-    const getTrainerClients = async () => {
-        try {
-            const response = await axios.get(api + `/trainer/clients/${userId}`)
-            setClients(response.data)
-        } catch (error) {
-            console.log('No clients found', error)
-        }
-    }
 
-    const getWorkouts = async () => {
+    const fetchWorkouts = async () => {
         try {
-            const results = await axios.get(api + `/schedule/${userId}`)
-            await setWorkouts(results.data)
+            getWorkouts(userId)
+                .then(response => {
+                    setWorkouts(response.data)
+                })
         } catch (e) {
             console.log(e)
         }
@@ -81,18 +72,14 @@ function Schedule() {
         if (newWorkoutTime === '') {
             setCalendarError(true)
         } else {
-            await axios.post(api + '/add-workout', {
-                userId: newWorkoutUser,
-                date: newWorkoutTime,
-                description: newWorkoutDescription
-            })
-            await getWorkouts()
+            await postWorkout(newWorkoutUser,newWorkoutTime,newWorkoutDescription)
+            await fetchWorkouts();
             await setNewWorkoutForm(false)
         }
     }
 
     async function deleteWorkout(workoutId) {
-        await axios.delete(api + `/delete-workout=${workoutId}`);
+        await deleteWorkoutById(workoutId);
         setWorkouts(prevWorkouts => prevWorkouts.filter(workout => workout._id !== workoutId));
     }
 
@@ -160,10 +147,10 @@ function Schedule() {
                             </thead>
                             <tbody>
                             <tr>
-                                <td className={"w-25"}> <input className={calendarError ? 'border border-danger' : ''}
+                                <td className={"w-25"}> <input className={calendarError ? 'border border-danger form-control' : 'form-control'}
                                             value={newWorkoutTime || new Date(selectedDate.getTime() - (selectedDate.getTimezoneOffset() * 60000)).toISOString().slice(0, -8)}
                                             name={"workoutTime"} type={"datetime-local"}
-                                            onChange={(e) => setNewWorkoutTime(e.target.value)} className="form-control" aria-label="Sizing example input"
+                                            onChange={(e) => setNewWorkoutTime(e.target.value)} aria-label="Sizing example input"
                                             aria-describedby="inputGroup-sizing-sm"/></td>
                                 <td className={"w-25"}> <select name="client" className="form-select" aria-label="Default select example" onChange={(e) => setNewWorkoutUser(e.target.value)} >
                                     <option value={userId}>Mina</option>
@@ -202,7 +189,7 @@ function Schedule() {
                 <div className="container w-75 mt-5"><Calendar className={"calendar mx-5 w-auto"} onChange={onChange} value={value} tileContent={hasWorkout}
                           tileClassName={hasWorkoutStyle} onClickDay={(value) => viewDay(value)} locale="et-EE"/></div></div>
                 :
-                <div>
+                <div    >
                     {!exerciseView ? dayViewRender() : <Exercises WorkoutId={workoutId} WorkoutDesc={workoutDesc} setExerciseView={setExerciseView}/>}
                 </div>
             }

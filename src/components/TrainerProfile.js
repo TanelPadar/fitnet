@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/main.css';
-import axios from "axios";
+import {getTrainerClients, getUser, UpdateUser} from "./utils";
 
 
-function TrainerProfile(props) {
+function TrainerProfile() {
     const [user, setUser] = useState(null)
     const [editInfo, setEditInfo] = useState(true)
     const [clients, setClients] = useState([])
@@ -15,27 +15,25 @@ function TrainerProfile(props) {
     const [gender, setGender] = useState('')
     const [city, setCity] = useState('')
     const [homeGym, setHomeGym] = useState('')
-
-    const api = process.env.REACT_APP_API_KEY
     const userId = localStorage.getItem('userId')
 
     useEffect(() => {
-        getUserInformation();
-        getTrainerClients()
+        fetchUserInformation();
+        fetchTrainerClients();
     }, []);
 
-    const getUserInformation = async () => {
+    const fetchUserInformation = async () => {
         try {
-            const response = await axios.get(api + `/trainers/${userId}`);
+            const response = await getUser(userId);
             setUser(response.data);
         } catch (error) {
             console.log('No user found', error);
         }
     };
 
-    const getTrainerClients = async () => {
+    const fetchTrainerClients = async () => {
         try {
-            const response = await axios.get(api + `/trainer/clients/${userId}`)
+            const response = await getTrainerClients(userId);
             setClients(response.data)
         } catch (error) {
             console.log('No clients found', error)
@@ -54,29 +52,18 @@ function TrainerProfile(props) {
     }
 
     const handleEditInfoSubmit = async () => {
-        const updatedFields = {}
-
-        if (name !== user.name) {
-            updatedFields.name = name
-        }
-        if (phone !== user.phone) {
-            updatedFields.phone = phone
-        }
-        if (gender !== user.gender) {
-            updatedFields.gender = gender
-        }
-        if (city !== user.city) {
-            updatedFields.city = city
-        }
-        if (homeGym !== user.home_gym) {
-            updatedFields.home_gym = homeGym
-        }
-        if (birthday !== user.birthday) {
-            updatedFields.birthday = new Date(birthday).toISOString();
+        const updatedFields = {
+            name:name,
+            phone:phone,
+            email:email,
+            gender:gender,
+            city:city,
+            home_gym: homeGym,
+            birthday:new Date(birthday).toISOString()
         }
 
         try {
-            await  axios.put(api + `/trainers/${userId}`, updatedFields)
+            await UpdateUser(userId,updatedFields)
             setEditInfo(false)
         } catch (error) {
             console.log("Error", error)
@@ -131,10 +118,10 @@ function TrainerProfile(props) {
                                     </div>
                                     <div>
                                         <p className="d-flex text-muted">Gender</p>
-                                        <select className="form-select" aria-label="Default select example" name="gender" onChange={(e) => setGender(e.target.value)}>
-                                            <option value="Male">Mees</option>
-                                            <option value="Female">Naine</option>
-                                            <option value="Other">Muu</option>
+                                        <select defaultValue={gender} className="form-select" aria-label="Default select example" name="gender" onChange={(e) => setGender(e.target.value)}>
+                                            <option  value="Mees">Mees</option>
+                                            <option value="Naine">Naine</option>
+                                            <option value="Muu">Muu</option>
                                         </select>
                                     </div>
                                     <div>
@@ -149,10 +136,8 @@ function TrainerProfile(props) {
                                     </div>
                                 </div>
                                 <div className="d-flex gap-1 justify-content-between mt-5">
-                                    <button type="button" type="submit" className="profile-btn">Salvesta
-                                    </button>
-                                    <button type="button" onClick={handleEditInfo} className="profile-btn ">Sulge
-                                    </button>
+                                    <button type="submit" className="profile-btn">Salvesta</button>
+                                    <button type="button" onClick={()=>setEditInfo(!editInfo)} className="profile-btn ">Tühista</button>
                                 </div>
                             </form>
 
