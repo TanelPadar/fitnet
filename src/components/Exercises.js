@@ -3,6 +3,7 @@ import AddExerciseForm from "./AddExerciseForm";
 import './Exercises.css'
 import ExerciseModal from "./ExerciseModal";
 import {getExercisesById} from "./utils";
+import axios from "axios";
 
 function Exercises(props) {
     const [exercises, setExercises] = useState([])
@@ -23,6 +24,12 @@ function Exercises(props) {
         }
     }
 
+    async function deleteExercise(id) {
+        await axios.delete(process.env.REACT_APP_API_KEY + `/delete-exercise/${id}`)
+        setIsOpen(false)
+        fetchExercises()
+    }
+
     function openExerciseModal(exercise) {
         setActiveExercise(exercise)
         setIsOpen(true)
@@ -31,21 +38,26 @@ function Exercises(props) {
     return (
         <div>
             <h5 className="text-muted my-3">{props.WorkoutDesc}</h5>
-            <div onClick={()=>props.setExerciseView(false)} className="text-button d-flex align-items-center mx-auto w-75 gap-1">
+            <div onClick={() => props.setExerciseView(false)}
+                 className="text-button d-flex align-items-center mx-auto w-75 gap-1">
                 <i className="fas fa-arrow-left"></i>
                 <p className="m-0 fw-bold">Tagasi</p>
             </div>
             {!addExercise ?
-                <div onClick={() => setAddExercise(true)} className="text-button d-flex align-items-center justify-content-center mt-3 gap-1">
+                <div onClick={() => setAddExercise(true)}
+                     className="text-button d-flex align-items-center justify-content-center mt-3 gap-1">
                     <i className="fas fa-plus"></i>
                     <p className="m-0 fw-bold">Lisa harjutus</p>
                 </div> :
-                <AddExerciseForm setAddExercise={setAddExercise} exercises={exercises} workoutId={props.WorkoutId} refreshExercises={fetchExercises}/>}
-                {exercises.map((exercise) => {
-                    const exerciseSets = exercise.sets
-                    return (
-                        <>
-                            <div className={"exercise-container w-25"} onClick={()=> openExerciseModal(exercise)}>
+                <AddExerciseForm setAddExercise={setAddExercise} exercises={exercises} workoutId={props.WorkoutId}
+                                 refreshExercises={fetchExercises}/>}
+            {exercises.map((exercise) => {
+                const exerciseSets = exercise.sets
+                return (
+                    <>
+                        <div className={"exercise-container w-25"}>
+                            <i onClick={() => deleteExercise(exercise._id)} className="icon fas fa-trash-alt delete-exercise-icon"></i>
+                            <div onClick={()=> openExerciseModal(exercise)} className={"cursor-pointer"}>
                                 <h2>{exercise.exerciseName}</h2>
                                 <table className={"sets"}>
                                     {exerciseSets.map((set) => (
@@ -56,12 +68,14 @@ function Exercises(props) {
                                     ))}
                                 </table>
                             </div>
-                        </>
-                    )
-                })}
-            <ExerciseModal setIsOpen={setIsOpen} modalIsOpen={modalIsOpen} exercise={activeExercise} refreshExercises={fetchExercises}/>
+                        </div>
+                    </>
+                )
+            })}
+            <ExerciseModal setIsOpen={setIsOpen} modalIsOpen={modalIsOpen} exercise={activeExercise}
+                           refreshExercises={fetchExercises}/>
         </div>
     )
 }
 
-export default Exercises
+    export default Exercises

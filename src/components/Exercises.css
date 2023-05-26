@@ -64,3 +64,11 @@ tr:nth-child(odd) {
     margin-left: 90%;
     font-size: 1.25em;
 }
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.delete-exercise-icon {
+    margin-left: 90%;
+}
