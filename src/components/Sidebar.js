@@ -4,6 +4,7 @@ import '../css/main.css';
 import TrainerProfile from "./TrainerProfile";
 import Clients from "./Clients";
 import Schedule from "./Schedule";
+import News from "./News";
 
 
 const Sidebar = () => {
@@ -48,6 +49,7 @@ const Sidebar = () => {
                     {activeItem === 'profile' && <TrainerProfile viewClients={setActiveItem}/>}
                     {activeItem === 'clients' && <Clients/>}
                     {activeItem === 'schedule' && <Schedule/>}
+                    {activeItem === 'settings' && <News/>}
                 </div>
             </div>
         </div>

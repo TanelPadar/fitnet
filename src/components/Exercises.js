@@ -37,11 +37,11 @@ function Exercises(props) {
 
     return (
         <div>
-            <h5 className="text-muted my-3">{props.WorkoutDesc}</h5>
+            <h4 className="tmy-3">{props.WorkoutDesc}</h4>
             <div onClick={() => props.setExerciseView(false)}
                  className="text-button d-flex align-items-center mx-auto w-75 gap-1">
                 <i className="fas fa-arrow-left"></i>
-                <p className="m-0 fw-bold">Tagasi</p>
+                <p className="m-0">Tagasi</p>
             </div>
             {!addExercise ?
                 <div onClick={() => setAddExercise(true)}
@@ -56,8 +56,8 @@ function Exercises(props) {
                 return (
                     <>
                         <div className={"exercise-container w-25"}>
-                            <i onClick={() => deleteExercise(exercise._id)} className="icon fas fa-trash-alt delete-exercise-icon"></i>
                             <div onClick={()=> openExerciseModal(exercise)} className={"cursor-pointer"}>
+                                <i onClick={() => deleteExercise(exercise._id)} className="icon fas fa-trash-alt delete-exercise-icon"></i>
                                 <h2>{exercise.exerciseName}</h2>
                                 <table className={"sets"}>
                                     {exerciseSets.map((set) => (

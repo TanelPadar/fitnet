@@ -38,7 +38,7 @@ function Signup(props) {
         }
 
         if (password.length < 6) {
-            setPasswordError('Parool on kohustuslik.');
+            setPasswordError('Salasõna peab olema vähemalt 6 tähemärki.');
             valid = false;
         } else {
             setPasswordError('');

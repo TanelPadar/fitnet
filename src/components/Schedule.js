@@ -71,10 +71,15 @@ function Schedule() {
         setCalendarError(false)
         if (newWorkoutTime === '') {
             setCalendarError(true)
-        } else {
+        }
+        else if (new Date(newWorkoutTime) < new Date()) {
+           alert("Sisestamine ebaõnnestus!  ")
+        }
+        else {
             await postWorkout(newWorkoutUser,newWorkoutTime,newWorkoutDescription)
             await fetchWorkouts();
             await setNewWorkoutForm(false)
+            alert("Sisestamine õnnestus :)")
         }
     }
 
@@ -103,7 +108,7 @@ function Schedule() {
                 {!newWorkoutForm ? (
                     <div onClick={closeDayView} className="text-button d-flex align-items-center mx-auto w-75 gap-1">
                         <i className="fas fa-arrow-left"></i>
-                        <p className="m-0 fw-bold">Tagasi</p>
+                        <p className="m-0 ">Tagasi</p>
                     </div>
                 ) : '' }
 
@@ -128,14 +133,14 @@ function Schedule() {
                             ))}
                             <div className="text-button d-flex align-items-center justify-content-center mt-3 gap-1">
                                 <i onClick={toggleNewWorkoutForm} className="fas fa-plus"></i>
-                                <p onClick={toggleNewWorkoutForm} className="m-0 fw-bold">Lisa Treening</p>
+                                <p onClick={toggleNewWorkoutForm} className="m-0 fw-bold">Lisa treening</p>
                             </div>
                         </div>
                     ) :
                     <div>
                         <div onClick={() => setNewWorkoutForm(false)} className="text-button d-flex align-items-center mx-auto w-75 gap-1">
                             <i className="fas fa-arrow-left"></i>
-                            <p className="m-0 fw-bold">Tagasi</p>
+                            <p className="m-0">Tagasi</p>
                         </div>
                         <table className="table mt-5">
                             <thead>
@@ -165,8 +170,8 @@ function Schedule() {
                             </tbody>
                         </table>
                         <div onClick={addNewWorkout} className="schedule-save d-flex justify-content-end align-items-center">
-                            <p className=" my-0">salvesta</p>
-                            <i className="fa-fw fas fa-save"></i>
+                            <p className="my-0">Salvesta</p>
+                            <i className="mx-0 fa-fw fas fa-save"></i>
                         </div>
 
                     </div>

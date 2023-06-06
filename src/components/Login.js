@@ -18,16 +18,16 @@ function Login(props) {
         e.preventDefault();
         // validate email
         if (!email) {
-            setEmailError('Email is required');
+            setEmailError('Email on nõutud väli.');
         } else if (!/\S+@\S+\.\S+/.test(email)) {
-            setEmailError('Invalid email address');
+            setEmailError('Palun sisesta korrektne E-posti aadress.');
         } else {
             setEmailError('');
         }
 
         // validate password
         if (password.length < 6) {
-            setPasswordError('Password must be at least 6 characters');
+            setPasswordError('Salasõna peab olema vähemalt 6 tähemärki.');
         } else {
             setPasswordError('');
         }
